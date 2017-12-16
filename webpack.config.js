@@ -40,8 +40,8 @@ module.exports = {
     historyApiFallback: true
   },
   plugins: [
-    new ExtractTextPlugin({filename: 'style.css', allChunks: true}),
-    new HtmlWebpackPlugin({filename: 'index.html', template: './public/index.html'}),
+    new ExtractTextPlugin({filename: './assets/styles/style.css'}),
+    new HtmlWebpackPlugin({filename: 'index.html', template: './src/index.html'}),
     new CleanWebpackPlugin(['dist'])
   ]
 };
