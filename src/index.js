@@ -13,5 +13,5 @@ ReactDOM.render(
       <App />
     </BrowserRouter>
   </Provider>,
-   document.querySelector('.wrapper')
+   document.querySelector('.container-fluid')
  );

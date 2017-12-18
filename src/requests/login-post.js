@@ -1,10 +1,9 @@
 import axios from 'axios';
 import '../interceptors/interceptor';
-import { userLogin } from '../actions/UserActions/user-action';
-import { bindActionCreators } from 'redux';
+import { userLogin, updateUser } from '../actions/UserActions/user-action';
 import { store } from '../store';
 
-export default (data, test) => {
+export default (data, instance) => {
    axios.post('http://34.211.76.6:9095/rest/auth/login', {
       email: data.emailId,
       password: data.password
@@ -12,17 +11,23 @@ export default (data, test) => {
     .then( function (response) {
       if (response && response.data) {
         if (typeof(Storage) !== 'undefined') {
-            localStorage.setItem('token', response.data);
-            //store.dispatch(userLogin(response.data.data));
-            console.log(store);
+            localStorage.setItem('token', response.data.data);
         }
-        else {
-            console.log('sorry');
-        }
-        test.history.push('/timesheet');
+        getUserDetail();
+        store.dispatch(userLogin());
+        instance.history.push('/timesheet');
       }
     })
     .catch(function (error) {
         test.history.push('/login');
     });
 };
+
+function getUserDetail() {
+  console.log("in getUserDetail");
+    axios.get('http://34.211.76.6:9095/rest/employee/detail')
+    .then (function (response) {
+        store.dispatch(updateUser(response.data.data));
+    }).catch(function (error) {
+    });
+}
