@@ -1,12 +1,19 @@
+nav {
+  a {
+      cursor: pointer;
+  }
+}
+.child-comp {
+  height: 550px;
+  .form-wrapper {
+
+  }
+}
+
 .footer {
     background-color: #F8F8F8;
-    bottom: 0;
-    box-sizing: border-box;
     font-size: 20px;
     height: 80px;
-    left: 0;
-    padding-top: 30px;
-    position: fixed;
+    padding-top: 20px;
     text-align: center;
-    width: 100%;
  }

@@ -1,7 +1,8 @@
 import React from 'react';
+import TimeFilter from '../containers/timeFilter';
 
 const TimesheetData = (props) => {
-    const timesheetData = props.data.map(data => {
+    const timesheetData = props.timesheetData.map(data => {
         return(
             <tr key={data.dateString}>
               <td>
@@ -30,6 +31,7 @@ const TimesheetData = (props) => {
     });
     return(
       <div>
+        { TimeFilter }
         <table className='table table-bordered table-hover col-xs-12'>
           <tbody>
             <tr>

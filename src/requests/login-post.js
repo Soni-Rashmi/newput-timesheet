@@ -10,21 +10,18 @@ export default (data, instance) => {
    })
     .then( function (response) {
       if (response && response.data) {
-        if (typeof(Storage) !== 'undefined') {
-            localStorage.setItem('token', response.data.data);
-        }
+        document.cookie = "'token ="+ response.data.data + ";max-age=3600'";
         getUserDetail();
         store.dispatch(userLogin());
         instance.history.push('/timesheet');
       }
     })
     .catch(function (error) {
-        test.history.push('/login');
+        instance.history.push('/login');
     });
 };
 
 function getUserDetail() {
-  console.log("in getUserDetail");
     axios.get('http://34.211.76.6:9095/rest/employee/detail')
     .then (function (response) {
         store.dispatch(updateUser(response.data.data));

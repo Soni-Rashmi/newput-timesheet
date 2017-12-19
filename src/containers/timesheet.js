@@ -7,18 +7,16 @@ import { updateUser } from '../actions/UserActions/user-action';
 
 class TimesheetDetails extends Component {
     constructor(props) {
-      console.log("in TimesheetDetails");
         super(props);
         this.state={
-            data: null
+            timesheetData: null
         }
     }
     componentDidMount() {
         const instance = this;
         axios.get('http://34.211.76.6:9095/rest/timesheet')
         .then (function (response) {
-            instance.setState({data: response.data.data});
-
+            instance.setState({timesheetData: response.data.data});
         })
         .catch(function (error) {
             instance.props.history.push('/login');
@@ -27,7 +25,7 @@ class TimesheetDetails extends Component {
     render(){
         return(
             <div>
-                {this.state.data ? <TimesheetData data={this.state.data} /> : <h1>Loading...</h1> }
+                {this.state.timesheetData ? <TimesheetData timesheetData={this.state.timesheetData} /> : <h1>Loading...</h1> }
             </div>
         );
     }
