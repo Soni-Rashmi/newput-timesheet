@@ -31,7 +31,7 @@ const TimesheetData = (props) => {
     });
     return(
       <div>
-        { TimeFilter }
+        < TimeFilter />
         <table className='table table-bordered table-hover col-xs-12'>
           <tbody>
             <tr>

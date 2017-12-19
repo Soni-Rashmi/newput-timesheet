@@ -8,6 +8,7 @@ import { Header } from '../components/header';
 import { store } from '../store';
 import { userLogout } from '../actions/UserActions/user-action';
 import { Footer } from '../components/footer';
+import ResetPasswordComponent from '../containers/resetPasswordComponent';
 
 class App extends Component {
     constructor(props) {
@@ -28,6 +29,7 @@ class App extends Component {
                 <Redirect to='/login' from='/' />
                 <Route path='/login' component={ LogIn } />
                 <Route path='/timesheet' component={ TimesheetDetails } />
+                <Route path='/resetPassword' component={ ResetPasswordComponent} />
               </div>
               <Footer />
             </div>

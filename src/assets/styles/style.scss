@@ -1,12 +1,19 @@
-nav {
+.navbar {
+    margin: 0px ;
   a {
       cursor: pointer;
   }
 }
 .child-comp {
-  height: 550px;
-  .form-wrapper {
+  min-height: 550px;
+  margin-top: 20px;
+  .filter-wrapper {
+      margin: 20px;
+      text-align: center;
 
+      .select-year, .select-month {
+          padding-right: 20px;
+      }
   }
 }
 

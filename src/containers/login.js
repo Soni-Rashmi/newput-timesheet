@@ -11,7 +11,7 @@ class LogIn extends Component {
         const { handleSubmit } = this.props;
         return (
           <div className='form-wrapper'>
-            <form className='form form-horizontal' onSubmit={
+            <form name='loginForm' className='form form-horizontal' onSubmit={
               handleSubmit((data) => {
                 loginAction(data, this.props);
               })
