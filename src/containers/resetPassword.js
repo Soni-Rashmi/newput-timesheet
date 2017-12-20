@@ -9,14 +9,13 @@ export default (data, instance) => {
       })
        .then( function (response) {
          if (response) {
-           alert("Password updated");
            instance.history.push('/login');
          }
        })
        .catch(function (error) {
        });
     } else {
-      alert('Both Password should match');
+      alert('Both Password must be same');
       instance.history.push('/resetPassword');
     }
 };

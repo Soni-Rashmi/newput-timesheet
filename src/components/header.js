@@ -15,7 +15,7 @@ export const Header = ((props) => {
                             <span className="icon-bar"></span>
                         </button>
                         <a className="navbar-brand"><img className="brand-img" src="http://www.newput.com/wp/wp-content/uploads/2016/01/newput-logo.png" alt="brand"/></a>
-                        <span className="navbar-brand">Timesheet</span>
+                        <div className="navbar-brand-text">Timesheet</div>
                     </div>
                     { store.getState().employee.isUserLoggedIn }
                     <div className="collapse navbar-collapse" id="app-navbar-collapse">
@@ -29,11 +29,3 @@ export const Header = ((props) => {
             </nav>
         );
   });
-
-
-
-// function logout(instance) {
-//     localStorage.setItem('token', '');
-//     store.dispatch(userLogout());
-//     instance.props.history.push('./login');
-// }

@@ -10,28 +10,31 @@ class LogIn extends Component {
     render() {
         const { handleSubmit } = this.props;
         return (
-          <div className='form-wrapper'>
-            <form name='loginForm' className='form form-horizontal' onSubmit={
+          <div className='col-sm-offset-3  col-sm-6 col-lg-4 col-lg-offset-4'>
+          <div className='login-form-wrapper'>
+            <p>Sign In </p>
+            <form name='loginForm' className='' onSubmit={
               handleSubmit((data) => {
                 loginAction(data, this.props);
               })
             } >
               <div className='form-group'>
-                <label className='control-label col-sm-4'>Email Id:</label>
-                <div className='col-sm-4'>
+                <label className='control-label'>Email Id:</label>
+                <div className='input-field'>
                   <Field name='emailId' component='input' type='email' placeholder='Email Id' className='form-control'  validations="isEmail" required/>
                 </div>
               </div>
               <div className='form-group'>
-                <label className='control-label col-sm-4'>Password:</label>
-                <div className='col-sm-4'>
-                  <Field name='password' component='input' type='password' placeholder='********' className='form-control' validations={{minLength: 8}} required/>
+                <label className='control-label'>Password:</label>
+                <div className='input-field'>
+                  <Field name='password' component='input' type='password' placeholder='********' className='form-control' required/>
                 </div>
               </div>
-              <div className='col-sm-2  col-sm-offset-4 text-center'>
+              <div className='text-center'>
                 <button type='submit' className='btn btn-primary'>Log In</button>
               </div>
             </form>
+          </div>
           </div>
         );
     }

@@ -16,7 +16,7 @@ class TimesheetDetails extends Component {
         const instance = this;
         axios.get('http://34.211.76.6:9095/rest/timesheet')
         .then (function (response) {
-            instance.setState({timesheetData: response.data.data});
+          instance.setState({timesheetData: response.data.data.timesheetData, totalHours: response.data.data.totalHours});
         })
         .catch(function (error) {
             instance.props.history.push('/login');
@@ -25,7 +25,7 @@ class TimesheetDetails extends Component {
     render(){
         return(
             <div>
-                {this.state.timesheetData ? <TimesheetData timesheetData={this.state.timesheetData} /> : <h1>Loading...</h1> }
+                {this.state.timesheetData ? <TimesheetData timesheetData={this.state.timesheetData} totalHours={this.state.totalHours}/> : <h1>Loading...</h1> }
             </div>
         );
     }

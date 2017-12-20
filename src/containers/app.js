@@ -25,8 +25,8 @@ class App extends Component {
         return (
             <div>
               <Header logout={this.logout}/>
-              <div className="child-comp">
-                <Redirect to='/login' from='/' />
+              <div className="child-comp row">
+                <Redirect from='/' to='/login' />
                 <Route path='/login' component={ LogIn } />
                 <Route path='/timesheet' component={ TimesheetDetails } />
                 <Route path='/resetPassword' component={ ResetPasswordComponent} />

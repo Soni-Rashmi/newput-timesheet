@@ -1,12 +1,90 @@
+* {
+  box-sizing: border-box;
+}
 .navbar {
     margin: 0px ;
   a {
       cursor: pointer;
   }
+  .navbar-brand-text{
+    position: absolute;
+    left: 520px;
+    font-size: 25px;
+    padding: 15px 15px;
+  }
 }
 .child-comp {
-  min-height: 550px;
-  margin-top: 20px;
+  min-height: 580px;
+  margin: 0px;
+
+  .login-form-wrapper {
+      border-radius: 3px;
+      box-shadow: 2px 2px 10px 2px grey;
+      height: 300px;
+      margin-top: 100px;
+      padding: 20px 0;
+      text-align: center;
+      width: 100%;
+
+      p {
+        box-shadow: 2px 2px 1px grey;
+        font-size: 25px;
+        margin-bottom: 30px;
+      }
+
+      label {
+        padding-right: 20px;
+        text-align: left;
+        width: 30%;
+      }
+
+      .input-field {
+        display: inline-block;
+        width: 55%;
+      }
+  }
+
+  .resetPassword-form-wrapper {
+    border-radius: 3px;
+    box-shadow: 2px 2px 10px 2px grey;
+    height: 300px;
+    margin-top: 100px;
+    padding: 20px 0;
+    text-align: center;
+    width: 100%;
+
+    p {
+      box-shadow: 2px 2px 1px grey;
+      font-size: 25px;
+      margin-bottom: 30px;
+    }
+
+    label {
+      padding-right: 20px;
+      text-align: left;
+      width: 38%;
+    }
+
+    .input-field {
+      display: inline-block;
+      width: 42%;
+    }
+  }
+
+  .timesheet-container {
+      min-height: 500px;
+      .current-month {
+          font-size: 25px;
+          margin: 20px 0;
+      }
+      .working-hours {
+        width: 8%;
+      }
+
+      .working-total-hours {
+        width: 8%;
+      }
+  }
   .filter-wrapper {
       margin: 20px;
       text-align: center;
@@ -21,6 +99,15 @@
     background-color: #F8F8F8;
     font-size: 20px;
     height: 80px;
-    padding-top: 20px;
     text-align: center;
+    padding-top: 20px;
  }
+
+@media screen and (min-width: 76px) and (max-width: 1023px){
+  .navbar-brand-text{
+    position: absolute;
+    left: 290px;
+    font-size: 25px;
+    padding: 15px 15px;
+  }
+}

@@ -10,28 +10,34 @@ class ResetPasswordComponent extends Component {
     render() {
       const { handleSubmit } = this.props;
       return(
-        <form name='ResetPasswordComponent' className='form form-horizontal' onSubmit={
-          handleSubmit((data) => {
-            resetPassword(data, this.props);
-          })
-        }>
-          <div className='form-group'>
-              <label className='control-label col-sm-4'>New password:</label>
-              <div className='col-sm-4'>
-                <Field name='password' component='input' type='password' className='form-control' validations={{minLength: 8}} required></Field>
+        <div className='col-sm-offset-4 col-sm-4 col-xs-12'>
+          <div className='resetPassword-form-wrapper'>
+            <p>Reset Password </p>
+            <form name='ResetPasswordComponent' className='form form-horizontal' onSubmit={
+              handleSubmit((data) => {
+                resetPassword(data, this.props);
+              })
+            }>
+              <div className='form-group'>
+                  <label className='control-label'>New password:</label>
+                  <div className='input-field'>
+                    <Field name='password' component='input' type='password' className='form-control' required></Field>
+                  </div>
               </div>
-          </div>
-          <div className='form-group'>
-              <label className='control-label col-sm-4'>Confirm password:</label>
-              <div className='col-sm-4'>
-                <Field name='password1' component='input' type='password' className='form-control' validations={{minLength: 8}} required></Field>
+              <div className='form-group'>
+                  <label className='control-label'>Confirm password:</label>
+                  <div className='input-field'>
+                    <Field name='password1' component='input' type='password' className='form-control' required></Field>
+                  </div>
               </div>
+              <div className='form-group text-center'>
+                  <button type='submit' className='btn btn-primary'>Reset Password</button>
+              </div>
+            </form>
           </div>
-          <div className='form-group text-center'>
-              <button type='submit' className='btn btn-primary'>Reset Password</button>
-          </div>
-        </form>
+        </div>
       );
+
     }
 }
 

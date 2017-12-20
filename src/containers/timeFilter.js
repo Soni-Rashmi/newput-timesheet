@@ -12,7 +12,7 @@ class TimeFilter extends Component {
                   <div className='form-group select-month'>
                       <Field name='month' component='select' type='input'className='form-control'>
                           <option>Select Month</option>
-                          <option>January </option>
+                          <option>Jan </option>
                           <option>Feb </option>
                       </Field>
                   </div>

@@ -21,6 +21,7 @@ export default (data, instance) => {
        }
      })
      .catch(function (error) {
+        alert("Error has occured. Plase try again");
          instance.history.push('/login');
      });
 };
