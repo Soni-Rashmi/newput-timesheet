@@ -1,34 +1,37 @@
 import React from 'react';
 import TimeFilter from '../containers/timeFilter';
 import { months } from '../containers/constants';
+import { days } from '../containers/constants';
 
 let i = 1;
 const TimesheetData = (props) => {
     const timesheetData = props.timesheetData.map(data => {
-          return(
-              <tr key={data.dateString}>
-                <td>{data.dateString}
-                </td>
-                <td className='working-hours'>
-                  {data.officeIn}
-                </td>
-                <td className='working-hours'>
-                  {data.officeOut}
-                </td>
-                <td className='working-hours'>
-                  {data.homeIn}
-                </td>
-                <td className='working-hours'>
-                  {data.homeOut}
-                </td>
-                <td className='working-total-hours'>
-                  {data.dayTotal}
-                </td>
-                <td>
-                  {data.status}
-                </td>
-              </tr>
-          );
+        return(
+            <tr key={data.dateString}>
+              <td>{days[new Date(Date.parse(data.date)).getDay()]+ ', '}
+              {months[new Date(Date.parse(data.date)).getMonth()].substring(0,3) + ' '}
+              {new Date(Date.parse(data.date)).getDate()}
+              </td>
+              <td className='working-hours'>
+                {data.officeIn}
+              </td>
+              <td className='working-hours'>
+                {data.officeOut}
+              </td>
+              <td className='working-hours'>
+                {data.homeIn}
+              </td>
+              <td className='working-hours'>
+                {data.homeOut}
+              </td>
+              <td className='working-total-hours'>
+                {data.dayTotal}
+              </td>
+              <td>
+                {data.status}
+              </td>
+            </tr>
+        );
     });
 
 
