@@ -13,7 +13,7 @@ class LogIn extends Component {
           <div className='col-sm-offset-3  col-sm-6 col-lg-4 col-lg-offset-4'>
           <div className='login-form-wrapper'>
             <p>Sign In </p>
-            <form name='loginForm' className='' onSubmit={
+            <form name='loginForm' onSubmit={
               handleSubmit((data) => {
                 loginAction(data, this.props);
               })

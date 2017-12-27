@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 axios.interceptors.request.use(function (config) {
-    const token = (document.cookie).split('=')[1];
+  var token = (document.cookie).split('=')[1];
+  console.log("inside interceptors:::" + token);
     if(token){
         config.headers['token'] = token;
     }

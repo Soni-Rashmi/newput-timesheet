@@ -1,58 +1,60 @@
 import React from 'react';
-import TimeFilter from '../containers/timeFilter';
-import { months } from '../containers/constants';
-import { days } from '../containers/constants';
+import { MONTHS, DAYS } from '../containers/constants';
 
 let i = 1;
 const TimesheetData = (props) => {
+
+    let monthNumber = props.month - 1;
+    let  monthName = MONTHS[monthNumber].substring(0, 3);
+    let year = props.year;
+
     const timesheetData = props.timesheetData.map(data => {
+        let date = data.dateString.split('-')[0];
         return(
-            <tr key={data.dateString}>
-              <td>{days[new Date(Date.parse(data.date)).getDay()]+ ', '}
-              {months[new Date(Date.parse(data.date)).getMonth()].substring(0,3) + ' '}
-              {new Date(Date.parse(data.date)).getDate()}
+            <tr key={ data.dateString } >
+              <td className='date-string'> { DAYS[new Date(year, monthNumber, date).getDay()] + ', ' }
+              {  monthName + ' ' }
+              { date }
               </td>
               <td className='working-hours'>
-                {data.officeIn}
+                { data.officeIn }
               </td>
               <td className='working-hours'>
-                {data.officeOut}
+                { data.officeOut }
               </td>
               <td className='working-hours'>
-                {data.homeIn}
+                { data.homeIn }
               </td>
               <td className='working-hours'>
-                {data.homeOut}
+                { data.homeOut }
               </td>
               <td className='working-total-hours'>
-                {data.dayTotal}
+                { data.dayTotal }
               </td>
               <td>
-                {data.status}
+                { data.status }
               </td>
             </tr>
         );
     });
 
-
     return(
       <div className='timesheet-container'>
-        <div className='current-month'>{ months[new Date().getMonth()]+ ','} {new Date().getFullYear()} </div>
         <table className='table table-bordered table-striped'>
           <tbody>
             <tr>
-              <th>Date</th>
-              <th>Office In</th>
-              <th>Office Out</th>
-              <th>Home In</th>
-              <th>Home Out</th>
-              <th>Total Hours</th>
+              <th className='date-string'>Date</th>
+              <th className='working-hours'>Office In</th>
+              <th className='working-hours'>Office Out</th>
+              <th className='working-hours'>Home In</th>
+              <th className='working-hours'>Home Out</th>
+              <th className='working-total-hours'>Total Hours</th>
               <th>Description</th>
             </tr>
             {timesheetData}
             <tr>
               <th colSpan='5' className='text-right'>Total Hours</th>
-              <th>{props.totalHours}</th>
+              <th>{ props.totalHours }</th>
               <th></th>
             </tr>
           </tbody>
@@ -61,5 +63,3 @@ const TimesheetData = (props) => {
     );
 }
 export default TimesheetData;
-
-// need to add < TimeFilter />

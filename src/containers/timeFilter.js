@@ -1,30 +1,42 @@
 import React, { Component } from 'react';
 import { Field, reduxForm, formValueSelector } from 'redux-form';
 import { connect } from 'react-redux';
+import { MONTHS, DAYS } from '../containers/constants';
+import { store } from '../store';
 
-const months = ['Jan', 'Feb', 'Mar', 'Apr'];
-
+const months = MONTHS.map( month => {
+    return(
+      <option key={ month } value={MONTHS.indexOf(month)+ 1}> { month } </option>
+    );
+});
+ 
 class TimeFilter extends Component {
-    render() {
+    constructor(props) {
+        super(props);
+    }
+    render(){
+        const { handleSubmit } = this.props;
         return(
-            <div className='filter-wrapper'>
-                <form className='form form-inline'>
+            <div>
+                <div className='current-month pull-left'>{MONTHS[this.props.month-1]} {this.props.year}</div>
+                <form className='form form-inline filter-wrapper pull-right' onSubmit={
+                  handleSubmit((data) => {
+                    this.props.triggerUpdateYearAndMonth(data, this.props)
+                  })}>
+                  <div className='form-group select-year'>
+                      <Field name='year' component='select' type='input' className='form-control'>
+                          <option >Select Year</option>
+                          <option value='2017'>2017</option>
+                          <option value='2018'>2018</option>
+                      </Field>
+                  </div>
                   <div className='form-group select-month'>
                       <Field name='month' component='select' type='input'className='form-control'>
                           <option>Select Month</option>
-                          <option>Jan </option>
-                          <option>Feb </option>
+                          { months }
                       </Field>
                   </div>
-                  <div className='form-group select-year'>
-                      <Field name='month' component='select' type='input'className='form-control'>
-                          <option >Select Year</option>
-                          <option value='1'>2017</option>
-                          <option value='2'>2018</option>
-                          <option value='3'>2019</option>
-                      </Field>
-                  </div>
-                      <button type='submit' className='btn btn-primary'>Submit</button>
+                  <button type='submit' className='btn btn-primary'>Search</button>
                 </form>
             </div>
         );
@@ -38,8 +50,14 @@ TimeFilter =  reduxForm({
 const selector = formValueSelector('TimeFilter');
 connect(
   state => {
-
+    year: selector(state, 'year')
+    month: selector(state, 'month')
+    return {
+        year,
+        month
+    }
   }
 )(TimeFilter);
+
 
 export default TimeFilter;
