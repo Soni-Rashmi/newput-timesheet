@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Field, reduxForm, formValueSelector } from 'redux-form';
 import { connect } from 'react-redux';
-import { MONTHS, DAYS } from '../containers/constants';
+import { MONTHS, DAYS, getYears } from '../containers/constants';
 import { store } from '../store';
 
 const months = MONTHS.map( month => {
@@ -9,7 +9,13 @@ const months = MONTHS.map( month => {
       <option key={ month } value={MONTHS.indexOf(month)+ 1}> { month } </option>
     );
 });
- 
+
+const years = getYears().map( year => {
+    return(
+      <option key={ year } value={ year }> { year } </option>
+    );
+});
+
 class TimeFilter extends Component {
     constructor(props) {
         super(props);
@@ -17,7 +23,7 @@ class TimeFilter extends Component {
     render(){
         const { handleSubmit } = this.props;
         return(
-            <div>
+            <div className=" container-fluid row">
                 <div className='current-month pull-left'>{MONTHS[this.props.month-1]} {this.props.year}</div>
                 <form className='form form-inline filter-wrapper pull-right' onSubmit={
                   handleSubmit((data) => {
@@ -26,8 +32,7 @@ class TimeFilter extends Component {
                   <div className='form-group select-year'>
                       <Field name='year' component='select' type='input' className='form-control'>
                           <option >Select Year</option>
-                          <option value='2017'>2017</option>
-                          <option value='2018'>2018</option>
+                          { years }
                       </Field>
                   </div>
                   <div className='form-group select-month'>

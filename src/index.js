@@ -12,5 +12,5 @@ ReactDOM.render(
       <App />
     </BrowserRouter>
   </Provider>,
-   document.querySelector('.container-fluid')
+   document.querySelector('#timesheet-app')
  );

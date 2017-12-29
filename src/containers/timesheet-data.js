@@ -1,13 +1,10 @@
 import React from 'react';
 import { MONTHS, DAYS } from '../containers/constants';
 
-let i = 1;
 const TimesheetData = (props) => {
-
     let monthNumber = props.month - 1;
     let  monthName = MONTHS[monthNumber].substring(0, 3);
     let year = props.year;
-
     const timesheetData = props.timesheetData.map(data => {
         let date = data.dateString.split('-')[0];
         return(
@@ -31,7 +28,7 @@ const TimesheetData = (props) => {
               <td className='working-total-hours'>
                 { data.dayTotal }
               </td>
-              <td>
+              <td className='status'>
                 { data.status }
               </td>
             </tr>
@@ -49,7 +46,7 @@ const TimesheetData = (props) => {
               <th className='working-hours'>Home In</th>
               <th className='working-hours'>Home Out</th>
               <th className='working-total-hours'>Total Hours</th>
-              <th>Description</th>
+              <th className='status'>Description</th>
             </tr>
             {timesheetData}
             <tr>
@@ -62,4 +59,5 @@ const TimesheetData = (props) => {
       </div>
     );
 }
+
 export default TimesheetData;

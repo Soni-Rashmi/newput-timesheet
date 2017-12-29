@@ -9,8 +9,8 @@ export default (data, instance) => {
            password: data.password
         })
          .then( function (response) {
-           if (response) {
-             instance.history.push('/login');
+           if (response.data.success) {
+             instance.history.push('/timesheet');
            }
          })
          .catch(function (error) {
