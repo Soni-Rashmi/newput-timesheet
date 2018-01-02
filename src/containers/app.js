@@ -1,19 +1,20 @@
 import React, { Component } from 'react';
 import { Route, Redirect, withRouter, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
+import cookie from 'react-cookies';
+
 import LogIn from '../containers/login';
 import TimesheetDetails from '../containers/timesheet';
-import { Header } from '../components/header';
+import Header from '../components/header';
 import { store } from '../store';
 import { userLogout } from '../actions/UserActions/user-action';
 import { Footer } from '../components/footer';
 import ResetPasswordComponent from '../containers/resetPasswordComponent';
-import cookie from 'react-cookies';
 
 class App extends Component {
   constructor(props) {
     super(props);
-    this.logout = this.logout.bind(this);
+    this.logout = this.logout.bind(this);;
   }
 
   logout() {
@@ -33,7 +34,7 @@ class App extends Component {
               <Redirect exact from='/' to='/login' />
               <Route exact path='/login' component= { LogIn } />
               <Route exact path='/timesheet' render={() => (!isLoggedIn() ? <Redirect to='/login' /> : <TimesheetDetails />)}  />
-              <Route exact path='/resetPassword' render={() => (!isLoggedIn() ? <Redirect to='/login' /> : <ResetPasswordComponent />)}/>
+              <Route exact path='/resetPassword' render={(props) => (!isLoggedIn() ? <Redirect to='/login' /> : <ResetPasswordComponent history={props.history} />) } />
             </Switch>
           </div>
         </div>
@@ -56,9 +57,4 @@ function isLoggedIn() {
   return false;
 }
 
-function requireAuth(nextState, replace) {
-  if (!isLoggedIn()) {
-    console.log('in requireAuth');
-  }
-}
 export default withRouter(connect(mapStateToProps)(App));

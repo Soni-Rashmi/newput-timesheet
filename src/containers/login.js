@@ -4,9 +4,7 @@ import { connect } from 'react-redux';
 import loginAction from '../requests/login-post';
 
 class LogIn extends Component {
-    constructor(props) {
-        super(props);
-    }
+
     render() {
         const { handleSubmit } = this.props;
         return (
@@ -21,7 +19,7 @@ class LogIn extends Component {
               <div className='form-group'>
                 <label className='control-label'>Email Id:</label>
                 <div className='input-field'>
-                  <Field name='emailId' component='input' type='email' placeholder='Email Id' className='form-control'  validations="isEmail" required/>
+                  <Field name='emailId' component='input' type='email' placeholder='Email Id' className='form-control' required/>
                 </div>
               </div>
               <div className='form-group'>
@@ -40,11 +38,22 @@ class LogIn extends Component {
     }
 }
 
+function validate(values) {
+  console.log(values);
+    const errors = {};
+    console.log(values);
+    if(!values.emailId){
+      errors.emailIdError = 'Enter your email address';
+    }
+    return errors;
+}
+
 LogIn =  reduxForm({
-  form: 'LogIn'
+  form: 'LogInForm',
+  validate
 })(LogIn);
 
-const selector = formValueSelector('LogIn');
+const selector = formValueSelector('LogInForm');
 connect(
   state => {
     emailId: selector(state, 'emailId')

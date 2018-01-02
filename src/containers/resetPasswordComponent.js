@@ -10,7 +10,7 @@ class ResetPasswordComponent extends Component {
     render() {
       const { handleSubmit } = this.props;
       return(
-        <div className='col-sm-offset-4 col-sm-4 col-xs-12'>
+        <div className='col-sm-offset-3  col-sm-6 col-lg-4 col-lg-offset-4'>
           <div className='resetPassword-form-wrapper'>
             <p>Reset Password </p>
             <form name='ResetPasswordComponent' className='form form-horizontal' onSubmit={
@@ -27,7 +27,7 @@ class ResetPasswordComponent extends Component {
               <div className='form-group'>
                   <label className='control-label'>Confirm password:</label>
                   <div className='input-field'>
-                    <Field name='password1' component='input' type='password' className='form-control' required></Field>
+                    <Field name='confirmPassword' component='input' type='password' className='form-control' required></Field>
                   </div>
               </div>
               <div className='form-group text-center'>
@@ -48,7 +48,8 @@ ResetPasswordComponent =  reduxForm({
 const selector = formValueSelector('ResetPasswordComponent');
 connect(
   state => {
-      password= selector(state, 'password')
+      password= selector(state, 'password'),
+      confirmPassword= selector(state, 'confirmPassword')
   }
 )(ResetPasswordComponent);
 

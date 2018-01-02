@@ -39,8 +39,8 @@ class TimesheetDetails extends Component {
       }
       return(
           <div>
-              <TimeFilter triggerUpdateYearAndMonth={(data) => this.updateYearAndMonth(data)} year={this.state.year} month={this.state.month}/>
-              <TimesheetData timesheetData={this.state.timesheetData} totalHours={this.state.totalHours} year={this.state.year} month={this.state.month}/>
+              <TimeFilter triggerUpdateYearAndMonth={(data) => this.updateYearAndMonth(data)} year={this.state.year} month={this.state.month} />
+              <TimesheetData timesheetData={this.state.timesheetData} totalHours={this.state.totalHours} year={this.state.year} month={this.state.month} />
           </div>
       );
     }
@@ -58,7 +58,7 @@ function setYearAndMonth(instance, data) {
 
     axios.get(`http://34.211.76.6:9095/rest/timesheet?year=${year}&month=${month}`)
     .then (function (response) {
-        instance.setState({timesheetData: response.data.data.timesheetData, totalHours: response.data.data.totalHours, year, month});
+       instance.setState({timesheetData: response.data.data.timesheetData, totalHours: response.data.data.totalHours, year, month});
     })
     .catch(function (error) { });
 }

@@ -11,18 +11,15 @@ export default (data, instance) => {
    password: data.password
   }).then( function (response) {
        if (response && response.data) {
-         cookie.save('token', response.data.data, { path: '/'});
-         if(data.password === 'newput123'){
-           store.dispatch(userLogin());
-           getUserDetail().then(function() {
-           instance.history.push('/resetPassword');
-           }).catch(function(){});
-         } else {
-           store.dispatch(userLogin());
-           getUserDetail().then(function() {
-           instance.history.push('/timesheet');
-           }).catch(function(){});
-         }
+         cookie.save('token', response.data.data, { path: '/', maxAge: 3600});
+         store.dispatch(userLogin());
+         getUserDetail().then(function() {
+           if(data.password === 'newput123'){
+             instance.history.push('/resetPassword');
+           } else {
+             instance.history.push('/timesheet');
+           }
+         }).catch(function(){});
        }
     }).catch(function (error) {
          alert("Error has occured. Plase try again");
