@@ -8,15 +8,19 @@ import loginAction from '../requests/login-post';
 const popoverHoverFocus = (
 	<Popover id='popover-trigger-hover-focus'>
 		Please go to the <strong><u>Time</u></strong> app and type command <strong><u>register/Register</u></strong>.
-		Then login again with the dafault password.
+		Then login again with the default password.
 	</Popover>
 );
 
 class LoginValidationForm extends Component {
 	constructor(props) {
 	  super(props);
+		this.submit = this.submit.bind(this);
   }
 
+	submit(values){
+		return loginAction(values, this.props);
+	}
   render() {
     const { error, handleSubmit, submitting } = this.props;
 
@@ -25,9 +29,7 @@ class LoginValidationForm extends Component {
         <div className='login-form-wrapper'>
           <p>Sign In </p>
           <form name='myForm' onSubmit= {
-						handleSubmit((data) => {loginAction(data, this.props)
-						})
-					}>
+						handleSubmit(this.submit)}>
            { error && <div className='validation-error'> { error } </div> }
             <Field name='emailId' type='email'
               component={ renderField } label='Email'

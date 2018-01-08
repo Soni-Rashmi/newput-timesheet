@@ -5,6 +5,15 @@ import resetPassword  from '../containers/reset-password';
 import { renderField } from '../containers/constants';
 
 class ResetPasswordForm extends Component {
+  constructor(props) {
+    super(props);
+    this.submit = this.submit.bind(this);
+  }
+
+  submit(values) {
+    return resetPassword(values, this.props);
+  }
+
   render() {
     const {  handleSubmit, submitting } = this.props;
     return(
@@ -12,10 +21,7 @@ class ResetPasswordForm extends Component {
         <div className='resetPassword-form-wrapper'>
           <p>Reset Password </p>
           <form  onSubmit={
-            handleSubmit((data) => {
-              resetPassword(data, this.props);
-            })
-          } >
+            handleSubmit( this.submit) } >
             <Field name='password' type='password' id='password'
               component={ renderField }  label='New Password'
             />

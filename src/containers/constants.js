@@ -1,4 +1,5 @@
 import React from 'react';
+import { FormGroup } from 'react-bootstrap';
 
 export const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 export const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -14,11 +15,11 @@ export function getYears() {
 };
 
 export const renderField = ({ input, label, type, meta: { touched, error } }) => (
-  <div className='form-group clearfix has-danger'>
+  <FormGroup className='clearfix' validationState={ (touched && error) ? 'error': null  }>
     <label className='control-label col-form-label form-control-label'> { label } </label>
     <div className='input-field'>
       <input {...input} placeholder={ label } type={ type } className='form-control form-control-danger' />
     </div>
     { touched && error && <div className='error-msg pull-right text-left'> { error } </div>  }
-  </div>
+  </FormGroup>
 );

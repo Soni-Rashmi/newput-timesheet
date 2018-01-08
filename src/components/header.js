@@ -23,7 +23,7 @@ class Header extends React.Component {
                     <span className='icon-bar'></span>
                 </button>
                 <a className='navbar-brand'><img className='brand-img' src='http://www.newput.com/wp/wp-content/uploads/2016/01/newput-logo.png' alt='logo'/></a>
-                <div className='navbar-brand-text'>Timesheet</div>
+                <div className='navbar-brand-text text-center'>Timesheet</div>
             </div>
             <div className='collapse navbar-collapse' id='app-navbar-collapse' aria-expanded='false'>
               { (this.props.employee && cookie.load('token')) ?

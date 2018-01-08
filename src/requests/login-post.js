@@ -18,11 +18,11 @@ export default (data, instance) => {
          if(data.password === 'newput123'){
            instance.history.push('/resetPassword');
          } else {
-           instance.history.push('/timesheet');
+            instance.history.push('/timesheet');
          }
        }).catch(function(error){});
      }
    }).catch(function (error) {
-       //throw new SubmissionError({'_error': 'Invalid username or password' });
+       throw new SubmissionError({'_error': 'Invalid username or password' });
    });
 };

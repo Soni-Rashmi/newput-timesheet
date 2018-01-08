@@ -45,14 +45,15 @@
 
   .navbar-brand-text{
     position: absolute;
-    left: 535px;
+    left: 445px;
     font-size: 25px;
     padding: 15px 15px;
+    width: 29%;
   }
 
 }
 .child-comp {
-  min-height: 575px;
+  min-height: 568px;
   margin: 0px;
 
   .spinner {
@@ -125,25 +126,31 @@
     }
 
     label {
-      padding-right: 20px;
+      padding-right: 15px;
       text-align: left;
       width: 40%;
     }
 
     .input-field {
       display: inline-block;
-      width: 52%;
+      width: 53%;
     }
 
     .error-msg {
-        @include errorMsg(#e4655c, 0, 25px, -5px, 0, 50%);
+        @include errorMsg(#e4655c, 0, 25px, -5px, 0, 49%);
     }
     .btn {
       margin-bottom: 30px;
     }
 
   }
-
+  .no-data-available {
+    border-radius: 5px;
+    box-shadow: 2px 2px 10px 2px grey;
+    font-size: 20px;
+    margin-top: 50px;
+    padding: 20px;
+  }
   .timesheet-container {
       min-height: 500px;
 
@@ -175,16 +182,19 @@
             text-align: left;
           }
       }
-      .has-error {
-        .form-control {
-          border: 2px solid #e4655c;
-        }
-      }
   }
 }
 .popover-title {
   font-size: 16px;
   text-align: center;
+}
+.has-error {
+  .control-label {
+    color: #000000;
+  }
+  .form-control {
+    border: 2px solid #e4655c;
+  }
 }
 
 footer {

@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Route } from 'react-router-dom';
+
 import TimesheetData from '../containers/timesheet-data';
-import { store } from '../store';
-import { updateUser } from '../actions/UserActions/user-action';
 import TimeFilter from '../containers/time-filter';
 
 class TimesheetDetails extends Component {
@@ -17,10 +15,10 @@ class TimesheetDetails extends Component {
     this.updateYearAndMonth = this.updateYearAndMonth.bind(this);
   }
 
-  updateYearAndMonth (data) {
+  updateYearAndMonth(data) {
     if(data.year && data.month){
-       setYearAndMonth(this, data).then (function(){
-         this.setState({year: data.year, month: data.month});
+       setYearAndMonth(this, data).then(() => {
+          this.setState({year: data.year, month: data.month});
        });
     } else {
        setYearAndMonth(this, null);
@@ -32,7 +30,7 @@ class TimesheetDetails extends Component {
   }
 
   render() {
-    if(!this.state.timesheetData ){
+    if(!this.state.timesheetData){
       return (
         <div className='spinner'>
           <i className='fa fa-spinner fa-pulse fa-2x '></i>
@@ -58,12 +56,13 @@ function setYearAndMonth(instance, data) {
     year = new Date().getFullYear();
     month= new Date().getMonth() + 1;
   }
-
-  return axios.get(`http://34.211.76.6:9095/rest/timesheet?year=${year}&month=${month}`)
-  .then (function (response) {
-     instance.setState({timesheetData: response.data.data.timesheetData, totalHours: response.data.data.totalHours, year, month});
-  })
-  .catch(function (error) { });
- }
+  return(
+    axios.get(`http://34.211.76.6:9095/rest/timesheet?year=${year}&month=${month}`)
+    .then (function (response) {
+       instance.setState({timesheetData: response.data.data.timesheetData, totalHours: response.data.data.totalHours, year, month});
+    })
+    .catch(function (error) { })
+  );
+}
 
 export default TimesheetDetails;
