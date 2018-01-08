@@ -10,8 +10,7 @@ const TimesheetData = (props) => {
         return(
             <tr key={ data.dateString } >
               <td className='date-string'> { DAYS[new Date(year, monthNumber, date).getDay()] + ', ' }
-              {  monthName + ' ' }
-              { date }
+              {  monthName + ' ' } { date }
               </td>
               <td className='working-hours'>
                 { data.officeIn }

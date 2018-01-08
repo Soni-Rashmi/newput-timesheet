@@ -1,21 +1,19 @@
 import React from 'react';
-import { store } from '../store';
 import { connect } from 'react-redux';
 import { userLogout } from '../actions/UserActions/user-action';
 import { getUserDetail } from '../containers/get-user-details';
 import cookie from 'react-cookies';
-import { Link } from 'react-router-dom';
 
 class Header extends React.Component {
     constructor(props) {
       super(props);
     }
 
+    componentDidMount() {
+        {(cookie.load('token') && !(this.props.employee))?
+          getUserDetail() : ''}
+    }
     render() {
-      console.log("inside render- hearder");
-      console.log(store.getState());
-      {(cookie.load('token') && !(this.props.employee))?
-        getUserDetail() : ''}
       return(
         <nav className='navbar navbar-default' id='header'>
             <div className='navbar-header'>
@@ -27,7 +25,6 @@ class Header extends React.Component {
                 <a className='navbar-brand'><img className='brand-img' src='http://www.newput.com/wp/wp-content/uploads/2016/01/newput-logo.png' alt='logo'/></a>
                 <div className='navbar-brand-text'>Timesheet</div>
             </div>
-            <Link to='/timesheet'>Time</Link>
             <div className='collapse navbar-collapse' id='app-navbar-collapse' aria-expanded='false'>
               { (this.props.employee && cookie.load('token')) ?
                 <ul className='nav navbar-nav navbar-right'>
@@ -44,7 +41,6 @@ class Header extends React.Component {
 }
 
 function mapStateToProps(state) {
-  // console.log(state.employee.employee + "mapStateToProps");
   return {
     employee: state.employee.employee
   };
