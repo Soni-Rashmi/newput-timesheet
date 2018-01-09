@@ -16,7 +16,7 @@ export default (data, instance) => {
        store.dispatch(userLogin());
        getUserDetail().then(function() {
          if(data.password === 'newput123'){
-           instance.history.push('/resetPassword');
+           instance.history.push('/reset-password');
          } else {
             instance.history.push('/timesheet');
          }

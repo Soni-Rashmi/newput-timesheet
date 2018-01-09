@@ -34,7 +34,7 @@ class App extends Component {
               <Redirect exact from='/' to='/login' />
               <Route exact path='/login' component= { LoginValidationForm } />\
               <Route exact path='/timesheet' render={() => (!isLoggedIn() ? <Redirect to='/login' /> : <TimesheetDetails />)}  />
-              <Route exact path='/resetPassword' render={(props) => (!isLoggedIn() ? <Redirect to='/login' /> : <ResetPasswordForm history={props.history} />) } />
+              <Route exact path='/reset-password' render={(props) => (!isLoggedIn() ? <Redirect to='/login' /> : <ResetPasswordForm history={props.history} />) } />
             </Switch>
           </div>
         </div>

@@ -3,6 +3,7 @@ import axios from 'axios';
 
 import TimesheetData from '../containers/timesheet-data';
 import TimeFilter from '../containers/time-filter';
+import { store } from '../store';
 
 class TimesheetDetails extends Component {
   constructor(props) {
@@ -10,18 +11,23 @@ class TimesheetDetails extends Component {
     this.state = {
       timesheetData: null,
       year: null,
-      month: null
+      month: null,
+      emp_id: null
   }
     this.updateYearAndMonth = this.updateYearAndMonth.bind(this);
   }
 
   updateYearAndMonth(data) {
     if(data.year && data.month){
-       setYearAndMonth(this, data).then(() => {
-          this.setState({year: data.year, month: data.month});
-       });
-    } else {
-       setYearAndMonth(this, null);
+      if(data.employee){
+        setYearAndMonth(this, data).then(() => {
+           this.setState({year: data.year, month: data.month, emp_id: data.employee });
+        });
+      } else {
+        setYearAndMonth(this, data).then(() => {
+           this.setState({year: data.year, month: data.month});
+        });
+      }
     }
   }
 
@@ -30,36 +36,49 @@ class TimesheetDetails extends Component {
   }
 
   render() {
+    const emp = store.getState().employee.employee;
     if(!this.state.timesheetData){
       return (
         <div className='spinner'>
           <i className='fa fa-spinner fa-pulse fa-2x '></i>
         </div>
       );
-    } else {
+    }
       return(
         <div>
           <TimeFilter triggerUpdateYearAndMonth={(data) => this.updateYearAndMonth(data)} year={this.state.year} month={this.state.month} />
           <TimesheetData timesheetData={this.state.timesheetData} totalHours={this.state.totalHours} year={this.state.year} month={this.state.month} />
         </div>
       );
-    }
+
   }
 }
 
 function setYearAndMonth(instance, data) {
-  let year, month;
+  let year, month, user_id, url;
   if(data) {
     year = data.year;
-    month= data.month;
+    month = data.month;
+    if(data.employee){
+      user_id = data.employee;
+    }
   } else {
     year = new Date().getFullYear();
-    month= new Date().getMonth() + 1;
+    month = new Date().getMonth() + 1;
+  }
+   url = `http://34.211.76.6:9095/rest/timesheet?year=${year}&month=${month}`;
+
+  if(user_id ){
+    if(user_id === 'Select Employee'){
+      url = `http://34.211.76.6:9095/rest/timesheet?year=${year}&month=${month}`;
+    } else {
+      url = `http://34.211.76.6:9095/rest/admin/timesheet?year=${year}&month=${month}&user_id=${user_id}`;
+    }
   }
   return(
-    axios.get(`http://34.211.76.6:9095/rest/timesheet?year=${year}&month=${month}`)
+    axios.get(url)
     .then (function (response) {
-       instance.setState({timesheetData: response.data.data.timesheetData, totalHours: response.data.data.totalHours, year, month});
+       instance.setState({timesheetData: response.data.data.timesheetData, totalHours: response.data.data.totalHours, year, month, user_id});
     })
     .catch(function (error) { })
   );
