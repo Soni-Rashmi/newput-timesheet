@@ -12,19 +12,19 @@ const TimesheetData = (props) => {
               <td className='date-string'> { DAYS[new Date(year, monthNumber, date).getDay()] + ', ' }
               {  monthName + ' ' } { date }
               </td>
-              <td className='working-hours'>
+              <td className='working-hours text-center'>
                 { data.officeIn }
               </td>
-              <td className='working-hours'>
+              <td className='working-hours text-center'>
                 { data.officeOut }
               </td>
-              <td className='working-hours'>
+              <td className='working-hours text-center'>
                 { data.homeIn }
               </td>
-              <td className='working-hours'>
+              <td className='working-hours text-center'>
                 { data.homeOut }
               </td>
-              <td className='working-total-hours'>
+              <td className='working-total-hours text-center'>
                 { data.dayTotal }
               </td>
               <td className='status'>
@@ -33,7 +33,7 @@ const TimesheetData = (props) => {
             </tr>
         );
     });
-    
+
     if(props.totalHours === '00:00') {
       return(<div className='no-data-available text-center col-sm-6 col-sm-offset-3'>No data available</div>)
     } else {
@@ -42,13 +42,13 @@ const TimesheetData = (props) => {
           <table className='table table-bordered table-striped'>
             <tbody>
               <tr>
-                <th className='date-string'>Date</th>
-                <th className='working-hours'>Office In</th>
-                <th className='working-hours'>Office Out</th>
-                <th className='working-hours'>Home In</th>
-                <th className='working-hours'>Home Out</th>
-                <th className='working-total-hours'>Total Hours</th>
-                <th className='status'>Description</th>
+                <th className='date-string text-center'>Date</th>
+                <th className='working-hours text-center'>Office In</th>
+                <th className='working-hours text-center'>Office Out</th>
+                <th className='working-hours text-center'>Home In</th>
+                <th className='working-hours text-center'>Home Out</th>
+                <th className='working-total-hours text-center'>Total Hours</th>
+                <th className='status text-center'>Description</th>
               </tr>
               {timesheetData}
               <tr>

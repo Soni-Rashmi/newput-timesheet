@@ -10,6 +10,7 @@ import { store } from '../store';
 import { userLogout } from '../actions/UserActions/user-action';
 import { Footer } from '../components/footer';
 import ResetPasswordForm from '../containers/reset-password-form';
+import Graph from '../containers/graph';
 
 class App extends Component {
   constructor(props) {
@@ -26,18 +27,17 @@ class App extends Component {
 
   render() {
     return (
-      <div>
+      <div className='container-fluid'>
         <Header logout={this.logout}/>
-        <div className="container-fluid">
           <div className="child-comp row">
             <Switch>
               <Redirect exact from='/' to='/login' />
               <Route exact path='/login' component= { LoginValidationForm } />\
-              <Route exact path='/timesheet' render={() => (!isLoggedIn() ? <Redirect to='/login' /> : <TimesheetDetails />)}  />
+              <Route exact path='/timesheet' render={(props) => (!isLoggedIn() ? <Redirect to='/login' /> : <TimesheetDetails history={props.history} />) }  />
               <Route exact path='/reset-password' render={(props) => (!isLoggedIn() ? <Redirect to='/login' /> : <ResetPasswordForm history={props.history} />) } />
+              <Route exact path='/graph-view' render={(props) => (!isLoggedIn() ? <Redirect to='/login' /> : <Graph history={props.history} />) } />
             </Switch>
           </div>
-        </div>
         <Footer />
       </div>
     );

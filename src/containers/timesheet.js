@@ -4,6 +4,7 @@ import axios from 'axios';
 import TimesheetData from '../containers/timesheet-data';
 import TimeFilter from '../containers/time-filter';
 import { store } from '../store';
+import { MONTHS } from '../containers/constants';
 
 class TimesheetDetails extends Component {
   constructor(props) {
@@ -13,12 +14,12 @@ class TimesheetDetails extends Component {
       year: null,
       month: null,
       emp_id: null
-  }
-    this.updateYearAndMonth = this.updateYearAndMonth.bind(this);
+    }
+  this.updateYearAndMonth = this.updateYearAndMonth.bind(this);
   }
 
   updateYearAndMonth(data) {
-    if(data.year && data.month){
+    if(data.year && data.month) {
       if(data.employee){
         setYearAndMonth(this, data).then(() => {
            this.setState({year: data.year, month: data.month, emp_id: data.employee });
@@ -29,6 +30,12 @@ class TimesheetDetails extends Component {
         });
       }
     }
+    //this.props.history.location.search = `?emp_id=${data.employee}&year=${data.year}`;
+    // this.props.history.push( {
+    //   pathname: '/timesheet',
+    //   search: `?emp_id=${data.employee}&year=${data.year}&month=${MONTHS[data.month-1]}`
+    // })
+    this.props.history.push('/timesheet');
   }
 
   componentDidMount() {
@@ -36,25 +43,24 @@ class TimesheetDetails extends Component {
   }
 
   render() {
-    const emp = store.getState().employee.employee;
-    if(!this.state.timesheetData){
+    if(!this.state.timesheetData ){
       return (
         <div className='spinner'>
           <i className='fa fa-spinner fa-pulse fa-2x '></i>
         </div>
       );
     }
-      return(
-        <div>
-          <TimeFilter triggerUpdateYearAndMonth={(data) => this.updateYearAndMonth(data)} year={this.state.year} month={this.state.month} />
-          <TimesheetData timesheetData={this.state.timesheetData} totalHours={this.state.totalHours} year={this.state.year} month={this.state.month} />
-        </div>
-      );
-
+    return(
+      <div>
+        <TimeFilter triggerUpdateYearAndMonth={(data) => this.updateYearAndMonth(data)} year={this.state.year} month={this.state.month} history={this.props.history}/>
+        <TimesheetData timesheetData={this.state.timesheetData} totalHours={this.state.totalHours} year={this.state.year} month={this.state.month} />
+      </div>
+    );
   }
 }
 
 function setYearAndMonth(instance, data) {
+
   let year, month, user_id, url;
   if(data) {
     year = data.year;
@@ -66,6 +72,7 @@ function setYearAndMonth(instance, data) {
     year = new Date().getFullYear();
     month = new Date().getMonth() + 1;
   }
+
    url = `http://34.211.76.6:9095/rest/timesheet?year=${year}&month=${month}`;
 
   if(user_id ){
@@ -75,6 +82,7 @@ function setYearAndMonth(instance, data) {
       url = `http://34.211.76.6:9095/rest/admin/timesheet?year=${year}&month=${month}&user_id=${user_id}`;
     }
   }
+
   return(
     axios.get(url)
     .then (function (response) {

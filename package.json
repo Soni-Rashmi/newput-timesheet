@@ -5,14 +5,15 @@
   "dependencies": {
     "extract-loader": "^1.0.1",
     "html-loader": "^0.5.1",
-    "install": "^0.10.2",
     "localstorage-ttl": "^1.0.2",
     "react": "^16.2.0",
     "react-bootstrap": "^0.32.0",
     "react-cookies": "^0.1.0",
     "react-dom": "^16.2.0",
+    "react-easy-chart": "^1.0.0",
     "react-scripts": "1.0.17",
-    "reactstrap": "^4.8.0"
+    "reactstrap": "^4.8.0",
+    "webpack-merge": "^4.1.1"
   },
   "scripts": {
     "start": "webpack-dev-server --hot",

@@ -15,7 +15,8 @@ class Header extends React.Component {
     }
     render() {
       return(
-        <nav className='navbar navbar-default' id='header'>
+        <nav className='navbar navbar-default navbar-fixed-top' id='header'>
+          <div className='container-fluid'>
             <div className='navbar-header'>
                 <button type='button' className='navbar-toggle collapsed' data-toggle='collapse' data-target='#app-navbar-collapse' aria-expanded='false'>
                     <span className='icon-bar'></span>
@@ -35,6 +36,7 @@ class Header extends React.Component {
                     <li><a onClick={() => this.props.logout()} ><span className='fa fa-power-off'></span> Logout</a></li>
                 </ul>: ' ' }
             </div>
+          </div>
         </nav>
       );
     }

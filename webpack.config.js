@@ -5,10 +5,10 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 //const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
-  entry: ["./src/index.js"],
+  entry: ['./src/index.js'],
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: "bundle.js"
+    filename: 'bundle.js'
   },
   module: {
     rules: [
@@ -31,7 +31,7 @@ module.exports = {
         use:  {
           loader : 'file-loader',
           options: {
-            name: "images/[name].[ext]"
+            name: 'images/[name].[ext]'
           }
         }
       }
