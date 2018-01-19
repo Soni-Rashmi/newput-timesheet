@@ -1,13 +1,11 @@
 import axios from 'axios';
 import { SubmissionError } from 'redux-form';
-import '../interceptors/interceptor';
+import cookie from 'react-cookies';
+
 import { userLogin } from '../actions/UserActions/user-action';
 import { store } from '../store';
-import cookie from 'react-cookies';
 import { getUserDetail } from '../containers/get-user-details';
-import { MONTHS } from '../containers/constants';
 
-let emp_id;
 export default (data, instance) => {
  return axios.post('http://34.211.76.6:9095/rest/auth/login', {
    email: data.emailId,
@@ -17,13 +15,14 @@ export default (data, instance) => {
        cookie.save('token', response.data.data, { path: '/', maxAge: 3600 });
        store.dispatch(userLogin());
        getUserDetail().then(function() {
-         emp_id = store.getState().employee.employee.id;
+        let emp_id = store.getState().employee.employee.id;
+        let url;
          if(data.password === 'newput123'){
-
-           instance.history.push('/reset-password');
+           url= '/reset-password';
          } else {
-            instance.history.push(`/timesheet?emp_id=${emp_id}&year=${new Date().getFullYear()}&month=${new Date().getMonth()+1}`);
+            url = `/timesheet?year=${new Date().getFullYear()}&month=${new Date().getMonth()+1}&emp_id=${emp_id}`;
          }
+         instance.history.push(url);
        }).catch(function(error){});
      }
    }).catch(function (error) {

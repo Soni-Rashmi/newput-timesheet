@@ -4,6 +4,8 @@ import { Popover, OverlayTrigger, Button } from 'react-bootstrap';
 import { renderField } from '../containers/constants';
 import loginAction from '../requests/login-post';
 import cookie from 'react-cookies';
+import { store } from '../store';
+import { getUserDetail } from '../containers/get-user-details';
 
 const popoverHoverFocus = (
 	<Popover id='popover-trigger-hover-focus'>
@@ -17,12 +19,6 @@ class LoginValidationForm extends Component {
 	  super(props);
 		this.submit = this.submit.bind(this);
   }
-
-	componentDidMount() {
-		if(cookie.load('token')){
-			this.props.history.push('/timesheet');
-		}
-	}
 
 	submit(values){
 		return loginAction(values, this.props);

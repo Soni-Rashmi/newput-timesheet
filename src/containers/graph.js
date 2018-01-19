@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { BarChart } from 'react-easy-chart';
 import { Tooltip, Button } from 'react-bootstrap';
+import queryString from 'query-string';
 
 import { MONTHS } from '../containers/constants';
 import TimeFilter from '../containers/time-filter';
@@ -42,16 +43,16 @@ class Graph extends Component {
   }
 
   goToDashboard () {
-    this.props.history.push('/timesheet');
+    this.props.history.goBack();
   }
 
   componentDidMount(){
     chartData = {};
     allEmpData =[];
     empNames = [];
-    let searchParams = this.props.history.location.search.substring(1).split('&');
-     year= searchParams[0].split('=')[1];
-     month = searchParams[1].split('=')[1];
+    const params = queryString.parse(this.props.history.location.search);
+    year = params.year;
+    month = params.month;
     getGraphData(year, month).then((data) => {
       data.map((empData, index) => {
         chartData = {
@@ -85,20 +86,21 @@ class Graph extends Component {
         {
           (year === '2017' && month < 12) || (year === `${new Date().getFullYear()}` && month > new Date().getMonth()+1 ) || (year.length > 4  || year.length < 4) || (month > 12 || month < 1 )?
             <div className='no-data-available text-center col-sm-6 col-sm-offset-3'> No data available </div>  :
-            <div >
+            <div>
               <BarChart
                 axes
                 axesLabels={{x: 'My x Axis', y: 'My y Axis'}}
                 grid
                 colorBars
                 height={450}
-                width={1200}
+                width={1100}
                 margin={{top: 20, right: 50, bottom: 30, left: 50}}
                 yDomainRange={[0, 300]}
                 data={ allEmpData }
                 mouseOverHandler={this.mouseOverHandler}
                 mouseOutHandler={this.mouseOutHandler}
                 style= {{ cursor: 'pointer' }}
+
               />
             { this.state.showToolTip ?
               <Tooltip id='tooltip' className='in' style={{top:this.state.top, left: this.state.left}} >

@@ -22,17 +22,17 @@ class App extends Component {
     var instance = this;
     store.dispatch(userLogout());
     cookie.remove('token', { path: '/' });
-    instance.props.history.push('./login');
+    instance.props.history.push('/login');
   }
 
   render() {
     return (
       <div className='container-fluid'>
-        <Header logout={this.logout}/>
+        <Header logout={this.logout} />
           <div className="child-comp row">
             <Switch>
               <Redirect exact from='/' to='/login' />
-              <Route exact path='/login' component= { LoginValidationForm } />\
+              <Route exact path='/login' render={(props) => (isLoggedIn() ? <Redirect to='/timesheet' /> : <LoginValidationForm history={props.history} />) } />
               <Route exact path='/timesheet' render={(props) => (!isLoggedIn() ? <Redirect to='/login' /> : <TimesheetDetails history={props.history} />) }  />
               <Route exact path='/reset-password' render={(props) => (!isLoggedIn() ? <Redirect to='/login' /> : <ResetPasswordForm history={props.history} />) } />
               <Route exact path='/graph-view' render={(props) => (!isLoggedIn() ? <Redirect to='/login' /> : <Graph history={props.history} />) } />

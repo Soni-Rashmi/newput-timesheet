@@ -6,6 +6,7 @@
     "extract-loader": "^1.0.1",
     "html-loader": "^0.5.1",
     "localstorage-ttl": "^1.0.2",
+    "query-string": "^5.0.1",
     "react": "^16.2.0",
     "react-bootstrap": "^0.32.0",
     "react-cookies": "^0.1.0",
@@ -17,7 +18,7 @@
   },
   "scripts": {
     "start": "webpack-dev-server --hot",
-    "build": "webpack",
+    "build": "webpack --config webpack-prod.config",
     "watch": "webpack --watch"
   },
   "devDependencies": {

@@ -1,4 +1,4 @@
-import { USER_LOGIN, USER_LOGOUT, USER_UPDATE } from '../actions/UserActions/user-action';
+import { USER_LOGIN, USER_LOGOUT, USER_UPDATE, TOGGLE_NOTIFICATION_IN_USER } from '../actions/UserActions/user-action';
 
 export default function (state = {}, action) {
     switch (action.type) {
@@ -21,6 +21,16 @@ export default function (state = {}, action) {
             'employee': action.employee
           }
         break;
+      case TOGGLE_NOTIFICATION_IN_USER:
+          state = {
+            ...state,
+            'employee': {
+                ...state.employee,
+                'notificationStatus': action.notificationStatus
+            }
+          }
+        break;
     }
+
     return state;
 }
