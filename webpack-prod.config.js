@@ -1,8 +1,9 @@
 const path = require('path');
-const webpack = require('webpack')
+const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = {
   entry: ['./src/index.js'],
@@ -31,7 +32,7 @@ module.exports = {
         use:  {
           loader : 'file-loader',
           options: {
-            name: 'images/[name].[ext]'
+            name: '[path][name].[ext]'
           }
         }
       }
@@ -45,16 +46,16 @@ module.exports = {
     new HtmlWebpackPlugin({filename: 'index.html', template: './src/index.html'}),
     new CleanWebpackPlugin(['dist']),
     new webpack.optimize.UglifyJsPlugin({
-      sourceMap: true,
       minimize: true,
       compress: {
         warnings: false
-    }
+      }
   }),
   new webpack.DefinePlugin({
     'process.env': {
       'NODE_ENV': JSON.stringify('production')
     }
   })
+  // new BundleAnalyzerPlugin()
   ]
 };

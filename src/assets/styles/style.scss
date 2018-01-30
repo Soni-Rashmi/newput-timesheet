@@ -12,7 +12,6 @@
   width: $width;
   border-radius: 3px;
 }
-
 * {
     box-sizing: border-box;
   }
@@ -30,22 +29,23 @@
       padding: 15px;
     }
   }
-  .employee-profile {
-    padding: 0 15px;
-    .profile-img {
-      border-radius: 5px;
-    }
-    .employee-name {
-      font-size: 18px;
-      padding: 0px 10px;
-    }
-    span {
-      vertical-align: middle;
-    }
-  }
 
-  .nav {
-    padding: 7px;
+  .navbar-right {
+    padding: 7px 35px;
+
+    .employee-profile {
+      padding: 0 15px;
+      .profile-img {
+        border-radius: 5px;
+      }
+      .employee-name {
+        font-size: 18px;
+        padding: 0px 10px;
+      }
+      span {
+        vertical-align: middle;
+      }
+    }
   }
 
   a {
@@ -61,18 +61,18 @@
 
 }
 .child-comp {
-  min-height: 78vh;
-  margin: 70px 0px 20px 0px;
+  min-height: 74vh;
+  margin: 90px 0px 20px 0px;
 
   .spinner {
     font-size: 25px;
     margin: 150px auto;
-    min-height: 575px;
+    min-height: 74vh;
     text-align: center;
   }
   .current-month {
-      font-size: 25px;
-      margin: 20px 0;
+      font-size: 21px;
+      margin:  0 0 25px 0;
   }
   .login-form-wrapper {
       @include formWrappers(3px, 280px, 130px, center, 100%);
@@ -144,40 +144,57 @@
     }
 
   }
+
   .no-data-available {
     border-radius: 5px;
-    box-shadow: 2px 2px 10px 2px grey;
-    font-size: 20px;
-    margin-top: 50px;
-    padding: 20px;
+    box-shadow: 0px 0px 3px 0px;
+    font-size: 25px;
+    margin: 20vh 10vw 20vh 16vw;
+    padding: 50px;
+  }
+  .graph-view {
+    overflow-y: auto;
   }
   .timesheet-container {
-      min-height: 500px;
+      min-height: 83vh;
 
       .date-string {
-        width: 9%;
+        width: 11%;
       }
 
-      .working-hours {
-        width: 7%;
+      .working-hours, .index {
+        width: 10%;
       }
 
       .working-total-hours {
-        width: 8%;
+        width: 9%;
+      }
+
+      .emp-name {
+        width: 30%;
+      }
+      table a {
+        cursor: pointer;
       }
   }
-  
+
   .filter-wrapper {
-      margin: 4vh 0;
-      text-align: center;
+      padding: 0 10px;
 
       .form-group {
-          padding-right: 25px;
-
           .error-msg {
             color: #e4655c;
             text-align: left;
           }
+      }
+      .btn {
+        width: 100%;
+      }
+      .notification-status {
+        display: inline-block;
+        margin: 0px 28px 25px 4px;
+        vertical-align: middle;
+        font-size: 18px;
       }
   }
 
@@ -210,21 +227,17 @@
   }
 
 }
-.custom-modal {
-  width: 90vw;
-}
 
 .bar-chart {
   text-align: center;
 }
 
-footer {
+.footer {
     background-color: #F8F8F8;
     box-shadow: 0px 0px 2px -1px;
     font-size: 20px;
     height: 64px;
     padding-top: 20px;
-    width: 100vw;
  }
 
 @media screen and (max-width: 767px){
@@ -233,4 +246,47 @@ footer {
       display: none;
     }
   }
+  .timesheet-container {
+    margin-top: 20px;
+  }
+}
+
+@media screen and (max-width: 1024px){
+  .navbar {
+    .navbar-brand-text{
+      display: none;
+    }
+  }
+  .timesheet-container {
+    margin-top: 20px;
+  }
+}
+
+@media screen and (min-width: 1025px) {
+  .filter-wrapper {
+    height: 100%;
+    left: 20px;
+    overflow-x: hidden;
+    position: fixed;
+    top: 90px;
+    width: 16%;
+    z-index: 1;
+
+    .current-month {
+      margin: 15px 0 15px 0;
+    }
+  }
+  .child-comp {
+    .col-lg-10 {
+      margin-left: 210px;
+    }
+    .no-data-available {
+      padding: 50px;
+      margin-left: 34vw;
+      width: 50vw;
+    }
+
+
+  }
+
 }

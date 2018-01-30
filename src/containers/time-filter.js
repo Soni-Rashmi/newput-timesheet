@@ -1,14 +1,19 @@
 import React, { Component } from 'react';
-import { Field, reduxForm, initalize } from 'redux-form';
-import { FormGroup, Button, Tooltip, OverlayTrigger } from 'react-bootstrap';
+import { connect } from 'react-redux';
 import axios from 'axios';
-import queryString from 'query-string';
+import cookie from 'react-cookies';
 
+import {Field, reduxForm } from 'redux-form';
+
+import FormGroup from 'react-bootstrap/lib/FormGroup';
+import Button from 'react-bootstrap/lib/Button';
+import Tooltip from 'react-bootstrap/lib/Tooltip';
+import OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger';
+
+import { getAllEmployeesDetails, goToDashboard } from '../containers/requests';
 import { toggleNotificationInUser } from '../actions/UserActions/user-action';
 import { store } from '../store';
-import { MONTHS, DAYS, getYears } from '../containers/constants';
-import Graph from '../containers/graph';
-import { getUserDetail } from '../containers/get-user-details';
+import { MONTHS, DAYS, getYears, NOTIFICATION_STATUS_API } from '../containers/constants';
 
 const months = MONTHS.map( month => {
     return(
@@ -26,7 +31,7 @@ const required = value => value ? (value === 'Select Year' || value === 'Select 
 
 const renderField = ({ input, label, type, meta: { touched, error }, children }) => (
   <FormGroup validationState={ (touched && error) ? 'error': null } >
-      <select {...input} placeholder={ label } type={ type } className={label === 'Select Employee'? 'form-control employee' : 'form-control' } >
+      <select {...input} placeholder={ label } type={ type } className={label === 'Select Employee'? 'form-control employee' : 'form-control' }  disabled={label === 'Select Employee' && cookie.load('viewMode') === 'graph'? 'true' : false}>
         <option> { label } </option>
         { children }
       </select>
@@ -45,7 +50,8 @@ class TimeFilter extends Component {
   constructor(props) {
     super(props);
     this.graphView = this.graphView.bind(this);
-    this.showNotification = this.showNotification.bind(this);
+    this.updateNotificationStatus = this.updateNotificationStatus.bind(this);
+    this.changeViewMode = this.changeViewMode.bind(this);
 
     this.state= {
       allEmp : null,
@@ -53,18 +59,16 @@ class TimeFilter extends Component {
     }
   }
 
-  showNotification() {
-    notificationStatus = !notificationStatus;
-    axios.put('http://34.211.76.6:9095/rest/employee/reset/notification', {
-      notificationStatus: notificationStatus
-    }).then( function (response) {
-        store.dispatch(toggleNotificationInUser(notificationStatus));
-    }).catch(function (error) {
-      store.dispatch(toggleNotificationInUser(!notificationStatus));
-    });
+  changeViewMode () {
+    cookie.save('viewMode', 'table', {path: '/', maxAge: 3600});
+    $('.table-view-button').css('background-color', '#337ab7');
+    $('.graph-view-button').css('background-color', '#31B0D5');
   }
 
   graphView(){
+    cookie.save('viewMode', 'graph', {path: '/', maxAge: 3600});
+    $('.table-view-button').css('background-color', '#31B0D5');
+    $('.graph-view-button').css('background-color', '#337ab7');
     let formData= store.getState().form.TimeFilterForm.values;
     let values;
     if(formData && formData.year && formData.month){
@@ -85,65 +89,66 @@ class TimeFilter extends Component {
         month: new Date().getMonth()+1
       }
     }
-   this.props.history.push(`/graph-view?year=${values.year}&month=${values.month}`);
+    this.props.triggerUpdateYearAndMonth(values);
   }
 
   componentDidMount() {
-    if(store.getState().employee && store.getState().employee.employee) {
-      empStatus = store.getState().employee.employee.status;
-      notificationStatus = store.getState().employee.employee.notificationStatus;
-    } else {
-      getUserDetail().then(function() {
-        empStatus = store.getState().employee.employee.status;
-        notificationStatus = store.getState().employee.employee.notificationStatus;
-      }).catch(function(){});
-    }
+    empStatus = this.props.empStatus;
+    notificationStatus = this.props.notificationStatus;
     if(empStatus === 'admin'){
       getAllEmployeesDetails(this);
     }
-    }
+  }
+
+  updateNotificationStatus() {
+    notificationStatus = !notificationStatus;
+    axios.put(NOTIFICATION_STATUS_API, {
+      notificationStatus: notificationStatus
+    }).then(function(response) {
+      store.dispatch(toggleNotificationInUser(notificationStatus));
+    }).catch(function() {
+      store.dispatch(toggleNotificationInUser(!notificationStatus));
+    })
+  }
 
   render() {
     const { handleSubmit, submitting } = this.props;
     return(
-      <div className='container-fluid row'>
-        <div className='current-month pull-left'> { MONTHS[this.props.month -1] }, {this.props.year} </div>
-          <form name='myForm' className='form form-inline filter-wrapper pull-right'
+      <div className='col-md-3 col-lg-2 filter-wrapper'>
+        {empStatus === 'admin' ? <a onClick={ goToDashboard } href='timesheet?year=2018&month=1'>Back </a> : ''}
+        <div className='current-month'> { MONTHS[this.props.month -1] }, {this.props.year} </div>
+          <form name='myForm' className='form'
             onSubmit={
               handleSubmit((data) => {
                 this.props.triggerUpdateYearAndMonth(data)})
-            }>
-            {(empStatus === 'admin') ?
+          }>
+          {(empStatus === 'admin') ?
               <Field name='employee' component={ renderField } type='text' label='Select Employee'>
                 { this.state.allEmp ? getAllEmployeesNames(this.state.allEmp): '' }
               </Field> : ''}
-            <Field name='year' component={ renderField } type='text' validate={ required } label='Select Year'>
-              { years }
-            </Field>
-            <Field name='month' component={ renderField } type='text' validate={ required } label='Select Month' >
-              { months }
-            </Field>
-            <div className='form-group'> <button type='submit' disabled={ submitting } className='btn btn-primary'> Search </button></div>
-            {(empStatus === 'admin') ?
-              <Button bsStyle='info' onClick= { this.graphView }> <span className='fa fa-bar-chart-o'></span>| Graph view </Button>
-            : <div className='form-group'><OverlayTrigger
+            {(empStatus === 'employee') ? <div>
+            <p className='notification-status'>Notification :</p>
+            <OverlayTrigger
               trigger={[ 'hover', 'focus' ]}
               placement='top'
               overlay={tooltipHoverFocus}>
-              <span id ='active' className = { notificationStatus ? 'fa fa-toggle-on fa-3x active pull-right' : 'fa fa-toggle-on fa-3x inactive fa-rotate-180 pull-right'}
-                onClick={ this.showNotification } > </span>
-            </OverlayTrigger></div> }
-
+              <span className = {notificationStatus ? 'fa fa-toggle-on fa-3x active' : 'fa fa-toggle-on fa-3x inactive fa-rotate-180'}
+                onClick={ this.updateNotificationStatus } ></span>
+            </OverlayTrigger></div> :''}
+            <Field name='year' component={ renderField }  validate={ required } label='Select Year'>
+              { years }
+            </Field>
+            <Field name='month' component={ renderField } validate={ required } label='Select Month' >
+              { months }
+            </Field>
+            <div className='form-group'> <Button type='submit' disabled={ submitting } bsStyle='info' className='table-view-button' onClick= { (empStatus === 'admin') ? this.changeViewMode  : null}> Table View</Button></div>
+            {(empStatus === 'admin')  ?
+              <Button bsStyle='info' onClick= { this.graphView } className='graph-view-button'> <span className='fa fa-bar-chart-o'></span>| Graph view </Button>
+            : '' }
           </form>
       </div>
     );
   }
-}
-
-function getAllEmployeesDetails(instance) {
- axios.get('http://34.211.76.6:9095/rest/admin/employee').then (function (response) {
-    instance.setState({ allEmp: response.data.data });
-  }).catch(function (error) { })
 }
 
 function getAllEmployeesNames(employees) {
@@ -155,6 +160,12 @@ function getAllEmployeesNames(employees) {
   return users;
 }
 
+function mapStateToProps(state){
+  return {
+    empStatus: state.employee.employee.status,
+    notificationStatus: state.employee.employee.notificationStatus
+  };
+}
 
 TimeFilter =  reduxForm({
   form: 'TimeFilterForm',
@@ -165,4 +176,4 @@ TimeFilter =  reduxForm({
   }
 })(TimeFilter);
 
-export default TimeFilter;
+export default connect(mapStateToProps)(TimeFilter);

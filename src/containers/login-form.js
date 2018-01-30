@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import { Field, reduxForm } from 'redux-form';
-import { Popover, OverlayTrigger, Button } from 'react-bootstrap';
+import {Field, reduxForm } from 'redux-form';
+import Popover from 'react-bootstrap/lib/Popover';
+import OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger';
+import Button from 'react-bootstrap/lib/Button';
+
 import { renderField } from '../containers/constants';
-import loginAction from '../requests/login-post';
+import { loginAction }  from '../containers/requests';
 import cookie from 'react-cookies';
 import { store } from '../store';
-import { getUserDetail } from '../containers/get-user-details';
 
 const popoverHoverFocus = (
 	<Popover id='popover-trigger-hover-focus'>
@@ -27,7 +29,7 @@ class LoginValidationForm extends Component {
   render() {
     const { error, handleSubmit, submitting } = this.props;
     return (
-      <div className='col-sm-offset-3  col-sm-6 col-lg-4 col-lg-offset-4'>
+      <div className='col-sm-offset-3 col-sm-6 col-lg-4 col-lg-offset-4'>
         <div className='login-form-wrapper'>
           <p>Sign In </p>
           <form name='myForm' onSubmit= {
@@ -40,7 +42,7 @@ class LoginValidationForm extends Component {
               component={ renderField } label='Password'
             />
             <div className='text-center button-wrapper'>
-              <button type='submit' disabled = { submitting } className=' btn btn-primary'> Log In </button>
+              <Button type='submit' disabled = { submitting } bsStyle='primary'> Log In </Button>
               <OverlayTrigger
                 trigger={[ 'hover', 'focus' ]}
                 placement='right'

@@ -1,4 +1,4 @@
-import { USER_LOGIN, USER_LOGOUT, USER_UPDATE, TOGGLE_NOTIFICATION_IN_USER } from '../actions/UserActions/user-action';
+import { USER_LOGIN, USER_LOGOUT, USER_UPDATE, TOGGLE_NOTIFICATION_IN_USER, VIEW_MODE_FOR_ADMIN } from '../actions/UserActions/user-action';
 
 export default function (state = {}, action) {
     switch (action.type) {
@@ -31,6 +31,5 @@ export default function (state = {}, action) {
           }
         break;
     }
-
     return state;
 }

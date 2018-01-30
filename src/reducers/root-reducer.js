@@ -1,4 +1,4 @@
-import { combineReducers } from 'redux';
+import combineReducers from 'redux/lib/combineReducers';
 import { reducers } from './form-reducer';
 import UserReducer from './user-reducer';
 
