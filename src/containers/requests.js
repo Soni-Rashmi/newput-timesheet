@@ -3,11 +3,12 @@ import { SubmissionError } from 'redux-form';
 import cookie from 'react-cookies';
 
 import '../interceptors/interceptor';
-import { updateUser, userLogin, changeViewMode } from '../actions/UserActions/user-action';
+import { updateUser, userLogin, changeViewMode, allEployeesData } from '../actions/UserActions/user-action';
 import { store } from '../store';
 import  { LOGIN_URL, RESET_PASSWORD_URL, TIMESHEET_URL, LOGIN_API, TIMESHEET_EMP_API, TIMESHEET_ADMIN_API, EMPLOYEE_DETAIL_API, ALL_EMPLOYEES_DATA_API, HOURSHEET_API, RESET_PASSWORD_API } from '../containers/constants';
 
 export function loginAction (data, instance){
+  let emp_id, empStatus, url;
  return axios.post(LOGIN_API, {
    email: data.emailId,
    password: data.password
@@ -16,11 +17,10 @@ export function loginAction (data, instance){
        cookie.save('token', response.data.data, { path: '/', maxAge: 3600 });
        store.dispatch(userLogin());
        getUserDetail().then(function() {
-        let emp_id = store.getState().employee.employee.id;
-        let empStatus =store.getState().employee.employee.status;
-        let url;
+         emp_id = store.getState().employee.employee.id;
+         empStatus =store.getState().employee.employee.status;
          if(data.password === 'newput123'){
-           url= {RESET_PASSWORD_URL};
+           url= RESET_PASSWORD_URL;
          } else {
            if(empStatus === 'admin') {
              cookie.save('viewMode', 'table', {path: '/', maxAge: 3600});
@@ -38,10 +38,10 @@ export function loginAction (data, instance){
 }
 
 export function getEmployeeTimesheetData(instance, data) {
+
   let year, month, user_id, url, empStatus;
   let viewMode = cookie.load('viewMode');
-
-  if(data) {
+  if(data){
     year = data.year;
     month = data.month;
     if(data.employee && viewMode !== 'graph'){
@@ -80,8 +80,16 @@ function getData(empStatus, instance, year, month, user_id){
 }
 
 export function getAllEmployeesDetails(instance) {
+  let eachEmp={}, allEmp=[];
  return axios.get(ALL_EMPLOYEES_DATA_API).then (function (response) {
-    instance.setState({ allEmp: response.data.data });
+   response.data.data.map(data =>{
+     eachEmp ={
+       id: data.id,
+       fullName: data.fullName
+     }
+     allEmp.push(eachEmp);
+   });
+  store.dispatch(allEployeesData(allEmp))
   }).catch(function (error) { })
 }
 
@@ -94,11 +102,12 @@ export function getUserDetail() {
 }
 
 export function resetPassword(data, instance) {
+  let emp_id, empStatus;
   return axios.put(RESET_PASSWORD_API, {
    password: data.password
   }).then( function (response) {
-    let emp_id = store.getState().employee.employee.id;
-    let empStatus = store.getState().employee.employee.status;
+     emp_id = store.getState().employee.employee.id;
+     empStatus = store.getState().employee.employee.status;
     if(empStatus === 'admin'){
       instance.history.push(`${TIMESHEET_URL}?year=${new Date().getFullYear()}&month=${new Date().getMonth()+1}`);
     } else {
@@ -108,6 +117,6 @@ export function resetPassword(data, instance) {
   }).catch(function (error) {});
 }
 
-export function goToDashboard() {
+export function goToDashboard(history) {
   cookie.save('viewMode', 'table', {path: '/', maxAge: 3600});
 }

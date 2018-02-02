@@ -8,12 +8,13 @@ import { getEmployeeTimesheetData } from '../containers/requests';
 let timesheetData, hoursheetData, monthNumber, monthName, year, date;
 
 const TimesheetData = (props) => {
-  if((props.year === '2017' && props.month < 12) || (props.year === `${new Date().getFullYear()}` && props.month > new Date().getMonth()+1)) {
+  if(props.totalHours === '00:00' || (props.year === '2017' && props.month < 12) || (props.year === `${new Date().getFullYear()}` && props.month > new Date().getMonth()+1)) {
     return(<div className='no-data-available text-center col-md-9 col-lg-10'>No data available</div>);
   }
     monthNumber = props.month - 1;
     monthName = MONTHS[monthNumber].substring(0, 3);
     year = props.year;
+
     if(props.timesheetData){
        timesheetData = props.timesheetData.map(data => {
           date = data.dateString.split('-')[0];
@@ -78,6 +79,7 @@ const TimesheetData = (props) => {
       <div className='col-md-9 col-lg-10 timesheet-container'>
       {props.timesheetData ?
         <Table striped bordered responsive>
+          <caption>{props.eName}  {MONTHS[props.month-1]}-{props.year}</caption>
           <thead>
             <tr>
               <th className='date-string text-center'>Date</th>
@@ -99,6 +101,7 @@ const TimesheetData = (props) => {
           </tbody>
         </Table> :
         <Table striped bordered responsive>
+          <caption>{MONTHS[props.month-1]}-{props.year}</caption>
           <thead>
             <tr>
               <th className='index text-center'> Sr. no </th>

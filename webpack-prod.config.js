@@ -3,7 +3,6 @@ const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = {
   entry: ['./src/index.js'],
@@ -38,9 +37,6 @@ module.exports = {
       }
     ]
   },
-  devServer: {
-    historyApiFallback: true
-  },
   plugins: [
     new ExtractTextPlugin({filename: './style.css'}),
     new HtmlWebpackPlugin({filename: 'index.html', template: './src/index.html'}),
@@ -56,6 +52,5 @@ module.exports = {
       'NODE_ENV': JSON.stringify('production')
     }
   })
-  // new BundleAnalyzerPlugin()
   ]
 };

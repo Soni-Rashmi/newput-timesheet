@@ -33,7 +33,7 @@ class App extends Component {
   render() {
     return (
       <div className='container-fluid'>
-        <Header logout={this.logout} />
+        <Header logout={this.logout} history={this.props.history}/>
           <div className='child-comp row'>
             <Switch>
               <Redirect exact from='/' to={LOGIN_URL}/>

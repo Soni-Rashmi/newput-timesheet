@@ -4,7 +4,9 @@ import cookie from 'react-cookies/build/cookie';
 
 import { userLogout } from '../actions/UserActions/user-action';
 import { getUserDetail, goToDashboard } from '../containers/requests';
+import { TIMESHEET_URL } from '../containers/constants';
 
+ let url = `${TIMESHEET_URL}?year=${new Date().getFullYear()}&month=${new Date().getMonth()+1}`;
 class Header extends React.Component {
     constructor(props) {
       super(props);
@@ -24,7 +26,7 @@ class Header extends React.Component {
                     <span className='icon-bar'></span>
                     <span className='icon-bar'></span>
                 </button>
-                <a className='navbar-brand' onClick={ goToDashboard } href='timesheet?year=2018&month=1'><img className='brand-img' src='http://www.newput.com/wp/wp-content/uploads/2016/01/newput-logo.png' alt='logo'/></a>
+                <a className='navbar-brand' onClick={goToDashboard} href={url}><img className='brand-img' src='http://www.newput.com/wp/wp-content/uploads/2016/01/newput-logo.png' alt='logo'/></a>
                 <div className='navbar-brand-text text-center'>Timesheet</div>
             </div>
             <div className='collapse navbar-collapse' id='app-navbar-collapse' aria-expanded='false'>

@@ -2,6 +2,7 @@ export const USER_LOGIN = 'USER_LOGIN';
 export const USER_LOGOUT = 'USER_LOGOUT';
 export const USER_UPDATE = 'USER_UPDATE';
 export const TOGGLE_NOTIFICATION_IN_USER = 'TOGGLE_NOTIFICATION_IN_USER';
+export const ALL_EMPLOYEES_DATA = 'ALL_EMPLOYEES_DATA';
 
 export function userLogin() {
   return {
@@ -30,4 +31,11 @@ export function toggleNotificationInUser(notificationStatus) {
     type: TOGGLE_NOTIFICATION_IN_USER,
     notificationStatus
   };
+}
+
+export function allEployeesData(employeesData){
+  return {
+    type: ALL_EMPLOYEES_DATA,
+    employeesData
+  }
 }

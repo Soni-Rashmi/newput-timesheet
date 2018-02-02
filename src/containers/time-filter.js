@@ -3,17 +3,17 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 import cookie from 'react-cookies';
 
-import {Field, reduxForm } from 'redux-form';
+import { Field, reduxForm } from 'redux-form';
 
 import FormGroup from 'react-bootstrap/lib/FormGroup';
 import Button from 'react-bootstrap/lib/Button';
 import Tooltip from 'react-bootstrap/lib/Tooltip';
 import OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger';
 
-import { getAllEmployeesDetails, goToDashboard } from '../containers/requests';
+import { getAllEmployeesDetails } from '../containers/requests';
 import { toggleNotificationInUser } from '../actions/UserActions/user-action';
 import { store } from '../store';
-import { MONTHS, DAYS, getYears, NOTIFICATION_STATUS_API } from '../containers/constants';
+import { MONTHS, DAYS, getYears, NOTIFICATION_STATUS_API, TIMESHEET_URL } from '../containers/constants';
 
 const months = MONTHS.map( month => {
     return(
@@ -31,8 +31,8 @@ const required = value => value ? (value === 'Select Year' || value === 'Select 
 
 const renderField = ({ input, label, type, meta: { touched, error }, children }) => (
   <FormGroup validationState={ (touched && error) ? 'error': null } >
-      <select {...input} placeholder={ label } type={ type } className={label === 'Select Employee'? 'form-control employee' : 'form-control' }  disabled={label === 'Select Employee' && cookie.load('viewMode') === 'graph'? 'true' : false}>
-        <option> { label } </option>
+      <select {...input} placeholder={ label } type={ type } className={label === 'Select Employee'? 'form-control employee' : 'form-control' }  style={((label === 'Select Employee') && (cookie.load('viewMode') === 'graph'))? {display:'none'} : {display:'block'}}>
+        <option id={label}> { label } </option>
         { children }
       </select>
   </FormGroup>
@@ -45,6 +45,7 @@ const tooltipHoverFocus = (
 );
 
 let year, month, emp_id, notificationStatus, empStatus;
+let url = `${TIMESHEET_URL}?year=${new Date().getFullYear()}&month=${new Date().getMonth()+1}`;
 
 class TimeFilter extends Component {
   constructor(props) {
@@ -54,21 +55,16 @@ class TimeFilter extends Component {
     this.changeViewMode = this.changeViewMode.bind(this);
 
     this.state= {
-      allEmp : null,
       graphData: null
     }
   }
 
   changeViewMode () {
     cookie.save('viewMode', 'table', {path: '/', maxAge: 3600});
-    $('.table-view-button').css('background-color', '#337ab7');
-    $('.graph-view-button').css('background-color', '#31B0D5');
   }
 
   graphView(){
     cookie.save('viewMode', 'graph', {path: '/', maxAge: 3600});
-    $('.table-view-button').css('background-color', '#31B0D5');
-    $('.graph-view-button').css('background-color', '#337ab7');
     let formData= store.getState().form.TimeFilterForm.values;
     let values;
     if(formData && formData.year && formData.month){
@@ -101,7 +97,7 @@ class TimeFilter extends Component {
   }
 
   updateNotificationStatus() {
-    notificationStatus = !notificationStatus;
+    notificationStatus: !notificationStatus
     axios.put(NOTIFICATION_STATUS_API, {
       notificationStatus: notificationStatus
     }).then(function(response) {
@@ -113,40 +109,39 @@ class TimeFilter extends Component {
 
   render() {
     const { handleSubmit, submitting } = this.props;
+
     return(
-      <div className='col-md-3 col-lg-2 filter-wrapper'>
-        {empStatus === 'admin' ? <a onClick={ goToDashboard } href='timesheet?year=2018&month=1'>Back </a> : ''}
-        <div className='current-month'> { MONTHS[this.props.month -1] }, {this.props.year} </div>
-          <form name='myForm' className='form'
-            onSubmit={
-              handleSubmit((data) => {
-                this.props.triggerUpdateYearAndMonth(data)})
-          }>
-          {(empStatus === 'admin') ?
-              <Field name='employee' component={ renderField } type='text' label='Select Employee'>
-                { this.state.allEmp ? getAllEmployeesNames(this.state.allEmp): '' }
-              </Field> : ''}
-            {(empStatus === 'employee') ? <div>
-            <p className='notification-status'>Notification :</p>
-            <OverlayTrigger
-              trigger={[ 'hover', 'focus' ]}
-              placement='top'
-              overlay={tooltipHoverFocus}>
-              <span className = {notificationStatus ? 'fa fa-toggle-on fa-3x active' : 'fa fa-toggle-on fa-3x inactive fa-rotate-180'}
-                onClick={ this.updateNotificationStatus } ></span>
-            </OverlayTrigger></div> :''}
-            <Field name='year' component={ renderField }  validate={ required } label='Select Year'>
-              { years }
-            </Field>
-            <Field name='month' component={ renderField } validate={ required } label='Select Month' >
-              { months }
-            </Field>
-            <div className='form-group'> <Button type='submit' disabled={ submitting } bsStyle='info' className='table-view-button' onClick= { (empStatus === 'admin') ? this.changeViewMode  : null}> Table View</Button></div>
-            {(empStatus === 'admin')  ?
-              <Button bsStyle='info' onClick= { this.graphView } className='graph-view-button'> <span className='fa fa-bar-chart-o'></span>| Graph view </Button>
-            : '' }
-          </form>
-      </div>
+        <div className='col-md-3 col-lg-2 filter-wrapper'>
+            <form name='myForm' className='form'
+              onSubmit={
+                handleSubmit((data) => {
+                  this.props.triggerUpdateYearAndMonth(data)})
+            }>
+            {(empStatus === 'admin') ?
+                <Field name='employee' component={ renderField } type='text' label='Select Employee'>
+                  { this.props.allEmp ? getAllEmployeesNames(this.props.allEmp): '' }
+                </Field> : ''}
+              {(empStatus === 'employee') ? <div>
+              <p className='notification-status'>Notification :</p>
+              <OverlayTrigger
+                trigger={[ 'hover']}
+                placement='top'
+                overlay={tooltipHoverFocus}>
+                <span className = {notificationStatus ? 'fa fa-toggle-on fa-3x active' : 'fa fa-toggle-on fa-3x inactive fa-rotate-180'}
+                  onClick={ this.updateNotificationStatus } ></span>
+              </OverlayTrigger></div> :''}
+              <Field name='year' component={ renderField }  validate={ required } label='Select Year'>
+                { years }
+              </Field>
+              <Field name='month' component={ renderField } validate={ required } label='Select Month' >
+                { months }
+              </Field>
+              <div className='form-group'> <Button type='submit' disabled={ submitting } bsStyle='primary' className='table-view-button' onClick= { (empStatus === 'admin') ? this.changeViewMode : null}> Search</Button></div>
+              {(empStatus === 'admin')  ?
+                <Button bsStyle='primary' onClick= { this.graphView } className='graph-view-button'> <span className='fa fa-bar-chart-o'></span>| Graph</Button>
+              : '' }
+            </form>
+        </div>
     );
   }
 }
@@ -163,7 +158,8 @@ function getAllEmployeesNames(employees) {
 function mapStateToProps(state){
   return {
     empStatus: state.employee.employee.status,
-    notificationStatus: state.employee.employee.notificationStatus
+    notificationStatus: state.employee.employee.notificationStatus,
+    allEmp: state.employee.employeesData
   };
 }
 
