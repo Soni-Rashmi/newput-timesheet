@@ -97,7 +97,7 @@ class TimeFilter extends Component {
   }
 
   updateNotificationStatus() {
-    notificationStatus: !notificationStatus
+    notificationStatus= !notificationStatus
     axios.put(NOTIFICATION_STATUS_API, {
       notificationStatus: notificationStatus
     }).then(function(response) {
@@ -109,7 +109,6 @@ class TimeFilter extends Component {
 
   render() {
     const { handleSubmit, submitting } = this.props;
-
     return(
         <div className='col-md-3 col-lg-2 filter-wrapper'>
             <form name='myForm' className='form'

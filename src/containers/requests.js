@@ -38,7 +38,6 @@ export function loginAction (data, instance){
 }
 
 export function getEmployeeTimesheetData(instance, data) {
-
   let year, month, user_id, url, empStatus;
   let viewMode = cookie.load('viewMode');
   if(data){

@@ -55,29 +55,30 @@ class Graph extends Component {
         {
           (year === '2017' && month < 12) || (year === `${new Date().getFullYear()}` && month > new Date().getMonth()+1 )?
             <div className='no-data-available text-center col-sm-6'> No data available </div>  :
-            <div className='col-md-9 col-lg-10 graph-view' style={{overflowY: 'auto'}}>
+            <div className='col-md-9 col-lg-10 graph-view'>
               <div className='current-month'>{MONTHS[this.props.month-1]}-{this.props.year}</div>
-              <BarChart
-                axes
-                axesLabels={{x: 'My x Axis', y: 'My y Axis'}}
-                grid
-                colorBars
-                height={430}
-                width={1100}
-                margin={{top: 20, right: 50, bottom: 30, left: 50}}
-                yDomainRange={[0, 300]}
-                data={ allEmpData }
-                mouseOverHandler={this.mouseOverHandler}
-                mouseOutHandler={this.mouseOutHandler}
-                style= {{ cursor: 'pointer' }}
-
-              />
-            { this.state.showToolTip ?
-              <Tooltip id='tooltip' className='in' style={{top:this.state.top, left: this.state.left}} >
-                <span> { this.state.dataDisplay } </span>
-              </Tooltip>
-            : ''}
-          </div>
+              <div >
+                <BarChart
+                  axes
+                  axesLabels={{x: 'My x Axis', y: 'My y Axis'}}
+                  grid
+                  colorBars
+                  height={430}
+                  width={1000}
+                  margin={{top: 20, right: 50, bottom: 30, left: 50}}
+                  yDomainRange={[0, 300]}
+                  data={ allEmpData }
+                  mouseOverHandler={this.mouseOverHandler}
+                  mouseOutHandler={this.mouseOutHandler}
+                  style= {{ cursor: 'pointer', overflowY: 'auto' }}
+                />
+                { this.state.showToolTip ?
+                  <Tooltip id='tooltip' className='in' style={{top:this.state.top, left: this.state.left}} >
+                    <span> { this.state.dataDisplay } </span>
+                  </Tooltip>
+                : ''}
+              </div>
+            </div>
         }
       </div>
     );

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import queryString from 'query-string';
 import cookie from 'react-cookies';
+import { connect } from 'react-redux';
 
 import TimesheetData from '../containers/timesheet-data';
 import TimeFilter from '../containers/time-filter';
@@ -48,26 +49,31 @@ class TimesheetDetails extends Component {
       });
     }
   }
+
   componentDidMount() {
     if(store.getState().employee && store.getState().employee.employee) {
-      empStatus = store.getState().employee.employee.status;
-    } else {
-      getUserDetail().then(function() {
-        empStatus = store.getState().employee.employee.status;
-      }).catch(function(){});
+     empStatus = store.getState().employee.employee.status;
+   } else {
+     getUserDetail().then(function() {
+       empStatus = store.getState().employee.employee.status;
+     }).catch(function(){});
 
     }
-    getAllEmployeesDetails().then(function(){
-      allEmpData = store.getState().employee.employeesData;
-    }).catch(function() {});
-     getQueryParams(this);
+     if(empStatus === 'admin'){
+        getAllEmployeesDetails().then(function(){
+          allEmpData = store.getState().employee.employeesData;
+        }).catch(function() {});
+      }
+      getQueryParams(this);
   }
 
-  componentWillReceiveProps() {
-    getAllEmployeesDetails().then(function(){
-      allEmpData = store.getState().employee.employeesData;
-    }).catch(function() {});
-    getQueryParams(this);
+  componentWillReceiveProps(nextProps) {
+     if(empStatus === 'admin') {
+      getAllEmployeesDetails().then(function(){
+       allEmpData = store.getState().employee.employeesData;
+     }).catch(function() {});
+    }
+     getQueryParams(this);
   }
 
   render() {
@@ -81,7 +87,7 @@ class TimesheetDetails extends Component {
     }
     return(
       <div>
-      {empStatus === 'admin' ?store.getState().employee.employeesData.map(data => {
+      {empStatus === 'admin' && allEmpData ?allEmpData.map(data => {
         ((data.id === this.state.user_id)?
         eName+= `${data.fullName},` :'')
       }): ''}
@@ -128,6 +134,5 @@ function getQueryParams(instance) {
     };
   getEmployeeTimesheetData(instance, data);
 }
-
 
 export default TimesheetDetails;

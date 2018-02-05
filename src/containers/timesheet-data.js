@@ -77,9 +77,9 @@ const TimesheetData = (props) => {
 
     return(
       <div className='col-md-9 col-lg-10 timesheet-container'>
+      <div className='current-month'>{props.eName}  {MONTHS[props.month-1]}-{props.year}</div>
       {props.timesheetData ?
         <Table striped bordered responsive>
-          <caption>{props.eName}  {MONTHS[props.month-1]}-{props.year}</caption>
           <thead>
             <tr>
               <th className='date-string text-center'>Date</th>
@@ -101,7 +101,6 @@ const TimesheetData = (props) => {
           </tbody>
         </Table> :
         <Table striped bordered responsive>
-          <caption>{MONTHS[props.month-1]}-{props.year}</caption>
           <thead>
             <tr>
               <th className='index text-center'> Sr. no </th>
