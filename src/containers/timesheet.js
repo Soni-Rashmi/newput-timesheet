@@ -29,7 +29,7 @@ class TimesheetDetails extends Component {
   }
 
   updateYearAndMonth(data) {
-    this.setState({isLoading: true});
+    this.setState({isLoading : true});
     if(data.employee === 'Select Employee'){
       data ={
         year : data.year,
@@ -44,7 +44,7 @@ class TimesheetDetails extends Component {
           obj['emp_id'] = data.employee;
           url += `&emp_id=${data.employee}`;
         }
-        this.setState({isLoading: false, obj});
+        this.setState({emp_id: obj.emp_id, year: obj.year, month: obj.month});
         this.props.history.push(url);
       });
     }
@@ -57,7 +57,6 @@ class TimesheetDetails extends Component {
      getUserDetail().then(function() {
        empStatus = store.getState().employee.employee.status;
      }).catch(function(){});
-
     }
      if(empStatus === 'admin'){
         getAllEmployeesDetails().then(function(){
@@ -68,6 +67,7 @@ class TimesheetDetails extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    this.setState({isLoading:true});
      if(empStatus === 'admin') {
       getAllEmployeesDetails().then(function(){
        allEmpData = store.getState().employee.employeesData;
@@ -88,25 +88,25 @@ class TimesheetDetails extends Component {
     return(
       <div>
       {empStatus === 'admin' && allEmpData ?allEmpData.map(data => {
-        ((data.id === this.state.user_id)?
+        ((data.id === this.state.emp_id)?
         eName+= `${data.fullName},` :'')
       }): ''}
         <TimeFilter triggerUpdateYearAndMonth={(data) => this.updateYearAndMonth(data)} year={this.state.year}
           month={this.state.month} history={this.props.history}
-          initialValues={{year:this.state.year, month:this.state.month, employee: this.state.user_id}}
+          initialValues={{year:this.state.year, month:this.state.month, employee: this.state.emp_id}}
         />
         {(this.state.isLoading) ?
           <div className='spinner col-md-9 col-lg-10'>
             <i className='fa fa-spinner fa-pulse fa-2x'></i>
           </div> :
-          ((empStatus === 'admin' && cookie.load('viewMode') === 'table')||(empStatus === 'employee') ?
-            <TimesheetData hoursheetData={this.state.hoursheetData} timesheetData={this.state.timesheetData} totalHours={this.state.totalHours}
-              year={this.state.year} month={this.state.month} triggerUpdateYearAndMonth={(data) => this.updateYearAndMonth(data)} eName={eName}
-            /> :
-            <Graph history={this.props.history} hoursheetData={this.state.hoursheetData}
-              year={this.state.year} month={this.state.month}
-            />)
-      }
+        ((empStatus === 'admin' && cookie.load('viewMode') === 'table')||(empStatus === 'employee') ?
+          <TimesheetData hoursheetData={this.state.hoursheetData} timesheetData={this.state.timesheetData} totalHours={this.state.totalHours}
+            year={this.state.year} month={this.state.month} triggerUpdateYearAndMonth={(data) => this.updateYearAndMonth(data)} eName={eName}
+          /> :
+          <Graph history={this.props.history} hoursheetData={this.state.hoursheetData}
+            year={this.state.year} month={this.state.month}
+          />)
+        }
       </div>
     );
   }
@@ -114,25 +114,32 @@ class TimesheetDetails extends Component {
 
 function getQueryParams(instance) {
   let data, employee = '';
-   params = queryString.parse(instance.props.history.location.search);
-    if(params.year && params.month ) {
-        year= params.year;
-        month= params.month;
-        if(params.emp_id) {
-          if(params.emp_id !== 'Select Employee'){
-            employee= params.emp_id;
-          }
+  params = queryString.parse(instance.props.history.location.search);
+
+  if(params.year && params.month ) {
+      year= params.year;
+      month= params.month;
+      if(params.emp_id) {
+        if(params.emp_id !== 'Select Employee'){
+          employee= params.emp_id;
+        }else {
+          employee = ''
         }
+      } else {
+        employee = ''
+      }
     } else {
         year= new Date().getFullYear();
         month= new Date().getMonth()+1;
-    }
+      }
     data = {
       year: year,
       month: month,
       employee: employee
     };
+
   getEmployeeTimesheetData(instance, data);
+
 }
 
 export default TimesheetDetails;

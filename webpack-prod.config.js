@@ -3,9 +3,10 @@ const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const DuplicatePackageCheckerPlugin = require('duplicate-package-checker-webpack-plugin');
 
 module.exports = {
-  entry: ['./src/index.js'],
+  entry: ['babel-polyfill', './src/index.js'],
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js'
@@ -51,6 +52,10 @@ module.exports = {
     'process.env': {
       'NODE_ENV': JSON.stringify('production')
     }
+  }),
+  new DuplicatePackageCheckerPlugin({
+    verbose: true,
+    emitError: true,
   })
   ]
 };

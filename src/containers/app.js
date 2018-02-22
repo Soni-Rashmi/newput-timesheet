@@ -5,15 +5,15 @@ import withRouter from 'react-router-dom/withRouter';
 import Switch from 'react-router-dom/Switch';
 import cookie from 'react-cookies';
 
+import { store } from '../store';
+import { userLogout } from '../actions/UserActions/user-action';
+import { LOGIN_URL, RESET_PASSWORD_URL, TIMESHEET_URL } from '../containers/constants';
 import LoginValidationForm from '../containers/login-form';
 import TimesheetDetails from '../containers/timesheet';
 import Header from '../components/header';
-import { store } from '../store';
-import { userLogout } from '../actions/UserActions/user-action';
 import { Footer } from '../components/footer';
 import ResetPasswordForm from '../containers/reset-password-form';
 import Graph from '../containers/graph';
-import  { LOGIN_URL, RESET_PASSWORD_URL, TIMESHEET_URL } from '../containers/constants';
 
 
 class App extends Component {
@@ -23,24 +23,26 @@ class App extends Component {
   }
 
   logout() {
-    var instance = this;
     store.dispatch(userLogout());
     cookie.remove('token', { path: '/' });
     cookie.remove('viewMode', { path: '/' });
-    instance.props.history.push({LOGIN_URL});
+    this.props.history.push({LOGIN_URL});
   }
 
   render() {
     return (
       <div className='container-fluid'>
         <Header logout={this.logout} history={this.props.history}/>
-          <div className='child-comp row'>
-            <Switch>
-              <Redirect exact from='/' to={LOGIN_URL}/>
-              <Route exact path={LOGIN_URL} render={(props) => (isLoggedIn() ? <Redirect to={TIMESHEET_URL} /> : <LoginValidationForm history={props.history} />) } />
-              <Route exact path={TIMESHEET_URL} render={(props) => (!isLoggedIn() ? <Redirect to={LOGIN_URL} /> : <TimesheetDetails history={props.history} />) }  />
-              <Route exact path={RESET_PASSWORD_URL} render={(props) => (!isLoggedIn() ? <Redirect to={LOGIN_URL} /> : <ResetPasswordForm history={props.history} />) } />
-            </Switch>
+          <div className='row'>
+            <div className='child-comp'>
+              <Switch>
+                <Redirect exact from='/' to={LOGIN_URL}/>
+                <Route exact path={LOGIN_URL} render={(props) => (isLoggedIn() ? <Redirect to={TIMESHEET_URL} /> : <LoginValidationForm history={props.history} />) } />
+                <Route exact path={TIMESHEET_URL} render={(props) => (!isLoggedIn() ? <Redirect to={LOGIN_URL} /> : <TimesheetDetails history={props.history} />) }  />
+                <Route exact path={RESET_PASSWORD_URL} render={(props) => (!isLoggedIn() ? <Redirect to={LOGIN_URL} /> : <ResetPasswordForm history={props.history} />) } />
+                <Route render={(props) => (isLoggedIn() ? <Redirect to={TIMESHEET_URL} /> : <Redirect to={LOGIN_URL} />) } />
+              </Switch>
+            </div>
           </div>
         <Footer />
       </div>
@@ -51,8 +53,9 @@ class App extends Component {
 function isLoggedIn() {
   if (cookie.load('token')) {
     return true;
+  } else {
+    return false;
   }
-  return false;
 }
 
 export default withRouter(App);

@@ -36,6 +36,6 @@ export default function (state = {}, action) {
             'employeesData': action.employeesData
           }
         break;
-    }
+      }
     return state;
 }

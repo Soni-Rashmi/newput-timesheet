@@ -3,7 +3,7 @@ import { SubmissionError } from 'redux-form';
 import cookie from 'react-cookies';
 
 import '../interceptors/interceptor';
-import { updateUser, userLogin, changeViewMode, allEployeesData } from '../actions/UserActions/user-action';
+import { updateUser, userLogin, changeViewMode, allEployeesData, isLoadingData } from '../actions/UserActions/user-action';
 import { store } from '../store';
 import  { LOGIN_URL, RESET_PASSWORD_URL, TIMESHEET_URL, LOGIN_API, TIMESHEET_EMP_API, TIMESHEET_ADMIN_API, EMPLOYEE_DETAIL_API, ALL_EMPLOYEES_DATA_API, HOURSHEET_API, RESET_PASSWORD_API } from '../containers/constants';
 
@@ -68,12 +68,13 @@ function getData(empStatus, instance, year, month, user_id){
     }
   } else {
     if(empStatus === 'employee'){
-      url = `${TIMESHEET_EMP_API}?year=${year}&month=${month}&emp_id=${user_id}`;
+      url = `${TIMESHEET_EMP_API}?year=${year}&month=${month}&user_id=${user_id}`;
     }
   }
   return(
     axios.get(url).then (function (response) {
-       instance.setState({hoursheetData: response.data.data, timesheetData: response.data.data.timesheetData, totalHours:response.data.data.totalHours, year, month, user_id });
+       instance.setState({hoursheetData: response.data.data, timesheetData: response.data.data.timesheetData, totalHours:response.data.data.totalHours, year, month, emp_id:user_id , isLoading:false});
+       store.dispatch(isLoadingData(false));
     }).catch(function (error) { })
   );
 }
@@ -117,5 +118,8 @@ export function resetPassword(data, instance) {
 }
 
 export function goToDashboard(history) {
+  let url = `${TIMESHEET_URL}?year=${new Date().getFullYear()}&month=${new Date().getMonth()+1}`;
   cookie.save('viewMode', 'table', {path: '/', maxAge: 3600});
+  history.push(url);
+  // store.dispatch(isLoadingData(true));
 }

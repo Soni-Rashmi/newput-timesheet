@@ -104,7 +104,7 @@ class TimeFilter extends Component {
       store.dispatch(toggleNotificationInUser(notificationStatus));
     }).catch(function() {
       store.dispatch(toggleNotificationInUser(!notificationStatus));
-    })
+    });
   }
 
   render() {
