@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { BarChart } from 'react-easy-chart';
+import BarChart from 'react-easy-chart/lib/bar-chart/index';
 import Tooltip from 'react-bootstrap/lib/Tooltip';
 import Button from 'react-bootstrap/lib/Button';
 import queryString from 'query-string';
 
 import { getEmployeeTimesheetData } from '../containers/requests';
-import { MONTHS } from '../containers/constants';
+import { MONTHS, SM_SCREEN_WIDTH, MD_SCREEN_WIDTH, LG_SCREEN_WIDTH } from '../containers/constants';
 import TimeFilter from '../containers/time-filter';
 
 let chartData = {};
@@ -22,16 +22,21 @@ class Graph extends Component {
       top: '',
       left: ''
     }
-
     this.mouseOverHandler = this.mouseOverHandler.bind(this);
     this.mouseOutHandler = this.mouseOutHandler.bind(this);
   }
 
   mouseOverHandler(d, e) {
+    let offset = 0;
+    if(window.innerWidth === SM_SCREEN_WIDTH){
+      offset= 10 - ((window.innerWidth * 0) / 100);
+    } else if(window.innerWidth === MD_SCREEN_WIDTH){
+      offset = ((window.innerWidth * 18) / 100);
+    }
     this.setState({
       showToolTip: true,
       top: (430-d.y)-70,
-      left: (e.offsetX - ((window.innerWidth * 18) / 100)) + 200
+      left: e.offsetX - offset
     });
     displaySelectedUser(d, this);
   }
@@ -64,7 +69,7 @@ class Graph extends Component {
                 colorBars
                 height={430}
                 width={1100}
-                margin={{top: 20, right: 20, bottom: 30, left: 50}}
+                margin={{top: 25, right: 20, bottom: 25, left: 50}}
                 yDomainRange={[0, 300]}
                 data={ allEmpData }
                 mouseOverHandler={this.mouseOverHandler}
@@ -72,7 +77,7 @@ class Graph extends Component {
                 style= {{ cursor: 'pointer', overflowY: 'auto' }}
               />
               { this.state.showToolTip ?
-                <Tooltip id='tooltip' className='in' placement='top' style={{top:this.state.top, left: this.state.left }} >
+                <Tooltip id='tooltip' className='in' bsClass='user-tooltip tooltip' placement='top' style={{top:this.state.top, left: this.state.left }} >
                   <span> { this.state.dataDisplay } </span>
                 </Tooltip>
               : ''}

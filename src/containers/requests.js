@@ -3,9 +3,9 @@ import { SubmissionError } from 'redux-form';
 import cookie from 'react-cookies';
 
 import '../interceptors/interceptor';
-import { updateUser, userLogin, changeViewMode, allEployeesData, isLoadingData } from '../actions/UserActions/user-action';
+import { updateUser, userLogin, changeViewMode, allEployeesData } from '../actions/UserActions/user-action';
 import { store } from '../store';
-import  { LOGIN_URL, RESET_PASSWORD_URL, TIMESHEET_URL, LOGIN_API, TIMESHEET_EMP_API, TIMESHEET_ADMIN_API, EMPLOYEE_DETAIL_API, ALL_EMPLOYEES_DATA_API, HOURSHEET_API, RESET_PASSWORD_API } from '../containers/constants';
+import  { LOGIN_URL, RESET_PASSWORD_URL, TIMESHEET_URL, LOGIN_API, TIMESHEET_EMP_API, TIMESHEET_ADMIN_API, EMPLOYEE_DETAIL_API, ALL_EMPLOYEES_DATA_API, HOURSHEET_API, RESET_PASSWORD_API, ADMIN_DETAILS_API, ADD_ENTRY_API, SEND_MAIL_API } from '../containers/constants';
 
 export function loginAction (data, instance){
   let emp_id, empStatus, url;
@@ -73,8 +73,7 @@ function getData(empStatus, instance, year, month, user_id){
   }
   return(
     axios.get(url).then (function (response) {
-       instance.setState({hoursheetData: response.data.data, timesheetData: response.data.data.timesheetData, totalHours:response.data.data.totalHours, year, month, emp_id:user_id , isLoading:false});
-       store.dispatch(isLoadingData(false));
+       instance.setState({hoursheetData: response.data.data, timesheetData: response.data.data.timesheetData, totalHours:response.data.data.totalHours, year, month, emp_id:user_id, isLoading:false});
     }).catch(function (error) { })
   );
 }
@@ -85,7 +84,8 @@ export function getAllEmployeesDetails(instance) {
    response.data.data.map(data =>{
      eachEmp ={
        id: data.id,
-       fullName: data.fullName
+       fullName: data.fullName,
+       email: data.email
      }
      allEmp.push(eachEmp);
    });
@@ -113,7 +113,6 @@ export function resetPassword(data, instance) {
     } else {
       instance.history.push(`${TIMESHEET_URL}?year=${new Date().getFullYear()}&month=${new Date().getMonth()+1}&emp_id=${emp_id}`);
     }
-
   }).catch(function (error) {});
 }
 
@@ -121,5 +120,43 @@ export function goToDashboard(history) {
   let url = `${TIMESHEET_URL}?year=${new Date().getFullYear()}&month=${new Date().getMonth()+1}`;
   cookie.save('viewMode', 'table', {path: '/', maxAge: 3600});
   history.push(url);
-  // store.dispatch(isLoadingData(true));
+}
+
+export function getAdminDetails() {
+   return axios.get(ADMIN_DETAILS_API)
+   .then (function (response) {
+       return (response.data);
+    })
+  .catch(function (error) { });
+}
+
+export function addEntryToTimesheet (data) {
+    return axios.post(ADD_ENTRY_API, {
+    "officeIn" : data.officeIn,
+    "officeOut" : data.officeOut,
+    "homeIn" : data.homeIn,
+    "homeOut" : data.homeOut,
+    "userId" : data.employee,
+    "dateString" : data.date
+  })
+  .then(function (response) { } )
+  .catch(function(error) { } )
+}
+
+export function sendMail(data) {
+  return axios.put(SEND_MAIL_API, {
+    'userId' : data.employee,
+    'startDate': data.startDate,
+    'endDate': data.endDate,
+    'subject': data.subject,
+    'toEmailIds': data.toEmailIds,
+    'ccEmailIds': data.ccEmailIds,
+    'message': data.message,
+    'month': data.month,
+    'year': data.year
+  })
+  .then(function (response){})
+  .catch(function (error) {
+    throw new SubmissionError({'_error': 'Please try again.' });
+  });
 }

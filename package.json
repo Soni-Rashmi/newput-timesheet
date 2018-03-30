@@ -5,14 +5,16 @@
   "dependencies": {
     "babel-polyfill": "^6.26.0",
     "html-loader": "^0.5.1",
+    "moment": "^2.21.0",
     "query-string": "^5.0.1",
     "react": "^16.2.0",
     "react-bootstrap": "^0.32.0",
     "react-cookies": "^0.1.0",
+    "react-datepicker": "^1.2.2",
     "react-dom": "^16.2.0",
     "react-easy-chart": "^1.0.0",
     "react-scripts": "1.0.17",
-    "recharts": "^1.0.0-beta.10"
+    "react-select": "^1.2.1"
   },
   "scripts": {
     "start": "webpack-dev-server --hot",

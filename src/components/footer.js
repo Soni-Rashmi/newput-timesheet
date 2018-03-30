@@ -4,10 +4,8 @@ import Col from 'react-bootstrap/lib/Col';
 
 export const Footer = (() => {
   return (
-    <Row componentClass='div'>
-      <Col xs={12} componentClass='div' className='text-center footer'>
-        <span> &copy; {new Date().getFullYear()} Newput Inc.</span>
-      </Col>
-    </Row>
+    <div className='text-center footer'>
+      <span> &copy; {new Date().getFullYear()} Newput Inc.</span>
+    </div>
   );
 });

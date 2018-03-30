@@ -6,10 +6,17 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 const DuplicatePackageCheckerPlugin = require('duplicate-package-checker-webpack-plugin');
 
 module.exports = {
-  entry: ['babel-polyfill', './src/index.js'],
+  entry: {
+    index: ["./src/index.js"],
+    vendor: ["react", "react-dom", "react-router-dom", "babel-polyfill"],
+    vendor2: ["react-select", "react-cookies", "react-redux", "query-string", "react-datepicker"],
+    vendor3: ["react-easy-chart/lib/bar-chart/index"],
+    vendor4: ["react-bootstrap/lib/FormGroup", "react-bootstrap/lib/FormControl", "react-bootstrap/lib/Button", "react-bootstrap/lib/Modal", "react-bootstrap/lib/Tooltip", "react-bootstrap/lib/OverlayTrigger"],
+    vendor5: ["redux-form", "react-router", "axios"]
+  },
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle.js'
+    filename: '[name].bundle.js'
   },
   module: {
     rules: [
@@ -56,6 +63,9 @@ module.exports = {
   new DuplicatePackageCheckerPlugin({
     verbose: true,
     emitError: true,
-  })
+  }),
+  new webpack.optimize.CommonsChunkPlugin({
+     names: ['index', 'vendor', 'vendor2', 'vendor3', 'vendor4', 'vendor5']
+   })
   ]
 };

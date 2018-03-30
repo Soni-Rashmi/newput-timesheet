@@ -87,7 +87,7 @@ class TimesheetDetails extends Component {
     }
     return(
       <div>
-      {empStatus === 'admin' && allEmpData ?allEmpData.map(data => {
+      {empStatus === 'admin' && allEmpData ? allEmpData.map(data => {
         ((data.id === this.state.emp_id)?
         eName+= `${data.fullName},` :'')
       }): ''}
@@ -137,9 +137,7 @@ function getQueryParams(instance) {
       month: month,
       employee: employee
     };
-
   getEmployeeTimesheetData(instance, data);
-
 }
 
 export default TimesheetDetails;

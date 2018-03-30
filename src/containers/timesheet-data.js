@@ -9,7 +9,7 @@ let timesheetData, hoursheetData, monthNumber, monthName, year, date;
 
 const TimesheetData = (props) => {
   if(props.totalHours === '00:00' || (props.year === '2017' && props.month < 12) || (props.year === `${new Date().getFullYear()}` && props.month > new Date().getMonth()+1)) {
-    return(<div className='no-data-available text-center col-md-9 col-lg-10'>No data available</div>);
+    return(<div className='no-data-available text-center col-md-9 col-lg-10 col-sm-8'>No data available</div>);
   }
     monthNumber = props.month - 1;
     monthName = MONTHS[monthNumber].substring(0, 3);
@@ -38,9 +38,7 @@ const TimesheetData = (props) => {
               <td className='working-total-hours text-center'>
                 { data.dayTotal }
               </td>
-              <td className='status'>
-                { data.status }
-              </td>
+            <td className='status' dangerouslySetInnerHTML={{__html: data.status}}></td>
             </tr>
           );
         });
@@ -76,7 +74,7 @@ const TimesheetData = (props) => {
       }
 
     return(
-      <div className='col-md-9 col-lg-10 timesheet-container'>
+      <div className='col-md-9 col-lg-10 col-sm-8 timesheet-container'>
       <div className='current-month'>{props.eName}  {MONTHS[props.month-1]}-{props.year}</div>
       {props.timesheetData ?
         <Table striped bordered responsive>

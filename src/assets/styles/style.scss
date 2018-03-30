@@ -62,19 +62,57 @@ body {
   }
 
 }
+
+.select-error{
+  border: 2px solid #e4655c;
+  border-radius: 7px;
+}
+
+#my-form {
+  .react-datepicker-wrapper {
+    width: 100%;
+    .react-datepicker__input-container {
+      width: 100%;
+    }
+  }
+  .react-datepicker__month-container {
+    width: 250px;
+    font-size: 15px;
+  }
+  .react-datepicker__current-month {
+    font-weight: 500;
+    font-size: 15px;
+  }
+  .react-datepicker__day-name {
+    margin: 6px;
+  }
+  .react-datepicker__month {
+    .react-datepicker__week {
+      .react-datepicker__day {
+        margin: 6px;
+      }
+    }
+  }
+  .validation-error {
+      color: #e4655c;
+      font-size: 17px;
+      padding-top: 15px;
+  }
+}
 .child-comp {
   min-height: 525px;
   margin: 70px 0px 20px 0px;
 
   .spinner1, .spinner {
     font-size: 25px;
-    margin: 150px 180px;
+    margin: 200px 180px;
     min-height: 250px;
     text-align: center;
   }
   .current-month {
     font-size: 20px;
     padding-bottom: 15px;
+    padding-top: 15px;
   }
 
   .login-form-wrapper {
@@ -140,12 +178,11 @@ body {
     }
 
     .error-msg {
-        @include errorMsg(#e4655c, 0, 25px, -5px, 0, 49%);
+      @include errorMsg(#e4655c, 0, 25px, -5px, 0, 49%);
     }
     .btn {
       margin-bottom: 30px;
     }
-
   }
 
   .no-data-available {
@@ -178,11 +215,9 @@ body {
       table a {
         cursor: pointer;
       }
-
   }
 
   .filter-wrapper {
-    padding: 45px 5px 20px 5px;
 
       .form-group {
           .error-msg {
@@ -211,9 +246,6 @@ body {
     cursor: pointer;
   }
 
-  // .employee {
-  //   min-width: 12vw;
-  // }
 }
 
 .popover-title {
@@ -245,6 +277,7 @@ a {
     box-shadow: 0px 0px 2px -1px;
     font-size: 20px;
     height: 64px;
+    margin: 0 -15px;
     padding-top: 20px;
  }
 }
@@ -260,9 +293,20 @@ a {
   .current-month {
     text-align: center;
   }
+  .user-tooltip {
+    display: none;
+  }
+  .filter-wrapper {
+    padding: 20px;
+  }
+  #my-form {
+    .form-control {
+      width: auto;
+    }
+  }
 }
 
-@media screen and (max-width: 1024px){
+@media screen and (max-width: 1023px){
   .navbar {
     .navbar-brand-text{
       display: none;
@@ -271,15 +315,21 @@ a {
   .timesheet-container {
     margin-top: 20px;
   }
+
+  // .timesheet-container, .spinner, .graph-view {
+  //   margin-left: 16%;
+  //   padding-left: 40px;
+  // }
+
   .current-month {
     text-align: center;
   }
   .filter-wrapper {
-
+    padding: 50px 15px 20px 15px;
   }
 }
 
-@media screen and (min-width: 1025px) {
+@media screen and (min-width: 1024px) {
   .filter-wrapper {
     height: 100%;
     left: 10px;
@@ -291,14 +341,24 @@ a {
 
   .child-comp {
     .timesheet-container, .spinner, .graph-view {
-      margin-left: 17%;
-      padding-left: 30px;
+      margin-left: 16%;
+      padding-left: 40px;
     }
 
     .no-data-available {
       margin: 90px 100px 90px 425px;
       padding: 50px;
       width: 50%;
+    }
+    .filter-wrapper {
+      padding: 63px 5px 20px 5px;
+    }
+  }
+}
+@media screen and (min-height: 899px) {
+  body {
+    .child-comp {
+      min-height: 545px;
     }
   }
 }

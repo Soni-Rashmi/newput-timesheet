@@ -19,7 +19,7 @@ import Graph from '../containers/graph';
 class App extends Component {
   constructor(props) {
     super(props);
-    this.logout = this.logout.bind(this);;
+    this.logout = this.logout.bind(this);
   }
 
   logout() {
@@ -32,7 +32,7 @@ class App extends Component {
   render() {
     return (
       <div className='container-fluid'>
-        <Header logout={this.logout} history={this.props.history}/>
+        <Header history={this.props.history} logout={this.logout}/>
           <div className='row'>
             <div className='child-comp'>
               <Switch>
