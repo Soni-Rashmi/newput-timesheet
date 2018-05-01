@@ -16,31 +16,33 @@ const TimesheetData = (props) => {
     year = props.year;
 
     if(props.timesheetData){
-       timesheetData = props.timesheetData.map(data => {
+       timesheetData = props.timesheetData.map((data, index) => {
           date = data.dateString.split('-')[0];
-          return(
-            <tr key={ data.dateString } >
-              <td className='date-string'> { DAYS[new Date(year, monthNumber, date).getDay()] + ', ' }
-              {  monthName + ' ' } { date }
-              </td>
-              <td className='working-hours text-center'>
-                { data.officeIn }
-              </td>
-              <td className='working-hours text-center'>
-                { data.officeOut }
-              </td>
-              <td className='working-hours text-center'>
-                { data.homeIn }
-              </td>
-              <td className='working-hours text-center'>
-                { data.homeOut }
-              </td>
-              <td className='working-total-hours text-center'>
-                { data.dayTotal }
-              </td>
-            <td className='status' dangerouslySetInnerHTML={{__html: data.status}}></td>
-            </tr>
-          );
+          if(index+1 <= new Date(year, monthNumber+1, 0).getDate()) {
+            return(
+              <tr key={ data.dateString } >
+                <td className='date-string'> { DAYS[new Date(year, monthNumber, date).getDay()] + ', ' }
+                {  monthName + ' ' } { date }
+                </td>
+                <td className='working-hours text-center'>
+                  { data.officeIn }
+                </td>
+                <td className='working-hours text-center'>
+                  { data.officeOut }
+                </td>
+                <td className='working-hours text-center'>
+                  { data.homeIn }
+                </td>
+                <td className='working-hours text-center'>
+                  { data.homeOut }
+                </td>
+                <td className='working-total-hours text-center'>
+                  { data.dayTotal }
+                </td>
+                <td className='status' dangerouslySetInnerHTML={{__html: data.status}}></td>
+              </tr>
+            );
+          }
         });
     }else {
         if(props.hoursheetData){
