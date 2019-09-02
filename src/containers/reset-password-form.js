@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Field, reduxForm } from 'redux-form';
+import {Field, reduxForm } from 'redux-form';
 
-import resetPassword  from '../containers/reset-password';
+import { resetPassword }  from '../containers/requests';
 import { renderField } from '../containers/constants';
 
 class ResetPasswordForm extends Component {

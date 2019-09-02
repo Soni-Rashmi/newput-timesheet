@@ -2,13 +2,12 @@ const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
-  entry: ["./src/index.js"],
+  entry: ['babel-polyfill', './src/index.js'],
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: "bundle.js"
+    filename: 'bundle.js'
   },
   module: {
     rules: [
@@ -31,7 +30,7 @@ module.exports = {
         use:  {
           loader : 'file-loader',
           options: {
-            name: "images/[name].[ext]"
+            name: 'images/[name].[ext]'
           }
         }
       }
@@ -43,13 +42,6 @@ module.exports = {
   plugins: [
     new ExtractTextPlugin({filename: './style.css'}),
     new HtmlWebpackPlugin({filename: 'index.html', template: './src/index.html'}),
-    new CleanWebpackPlugin(['dist']),
-    new UglifyJsPlugin({
-      test: /\.js($|\?)/i,
-      sourceMap: true,
-      uglifyOptions: {
-        compress: true
-    }
-  })
+    new CleanWebpackPlugin(['dist'])
   ]
 };
