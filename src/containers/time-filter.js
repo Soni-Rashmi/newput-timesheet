@@ -46,7 +46,7 @@ const tooltipHoverFocus = (
 	</Tooltip>
 );
 
-let year, month, emp_id, notificationStatus, empStatus;
+let year, month, empId, notificationStatus, empStatus;
 let url = `${TIMESHEET_URL}?year=${new Date().getFullYear()}&month=${new Date().getMonth()+1}`;
 
 
@@ -103,6 +103,7 @@ class TimeFilter extends Component {
   componentDidMount() {
     empStatus = this.props.empStatus;
     notificationStatus = this.props.notificationStatus;
+    empId = this.props.empId;
     if(empStatus === 'admin'){
       getAllEmployeesDetails(this);
     }
@@ -169,8 +170,18 @@ class TimeFilter extends Component {
                 <div className='form-group'>
                   <Button bsStyle='primary' onClick= { this.showModalToSendMail } className='graph-view-button'>Send Email</Button>
                 </div>
+
+                <div className='form-group'>
+                  <a className='btn btn-primary' target='_blank' href='/salary-slip/#/'>Manage Salary Slips</a>
+                </div>
               </div>
-            : '' }
+            :
+            <div>
+              <div className='form-group'>
+                <a className='btn btn-primary' target='_blank' href={'/salary-slip/#/employee/' + empId + '/salarySlips'}>View Salary Slips</a>
+              </div>
+            </div>
+           }
           </form>
         <Modal
           show={this.state.show}
@@ -206,6 +217,7 @@ function getAllEmployeesNames(employees) {
 function mapStateToProps(state){
   return {
     empStatus: state.employee.employee.status,
+    empId: state.employee.employee.id,
     notificationStatus: state.employee.employee.notificationStatus,
     allEmp: state.employee.employeesData
   };
